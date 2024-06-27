@@ -5,6 +5,7 @@ import { Optional } from '@/core/types/optional'
 type AdminProps = {
   name: string
   cpf: string
+  email: string
   password: string
   createdAt: Date
   updatedAt?: Date | null
