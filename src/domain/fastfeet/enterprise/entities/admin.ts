@@ -2,7 +2,7 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-type AdminProps = {
+export type AdminProps = {
   name: string
   cpf: string
   email: string
@@ -30,6 +30,10 @@ export class Admin extends Entity<AdminProps> {
 
   get cpf() {
     return this.props.cpf
+  }
+
+  get email() {
+    return this.props.email
   }
 
   get password() {
