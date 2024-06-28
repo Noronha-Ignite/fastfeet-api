@@ -2,9 +2,10 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-type DelivererProps = {
+export type DelivererProps = {
   name: string
   cpf: string
+  email: string
   password: string
   createdAt: Date
   updatedAt?: Date | null
@@ -29,6 +30,10 @@ export class Deliverer extends Entity<DelivererProps> {
 
   get cpf() {
     return this.props.cpf
+  }
+
+  get email() {
+    return this.props.email
   }
 
   get password() {
