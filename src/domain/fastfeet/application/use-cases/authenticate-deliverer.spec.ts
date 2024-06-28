@@ -22,7 +22,7 @@ describe('Authenticate deliverer use case', () => {
     )
   })
 
-  it('should be able to authenticate an deliverer', async () => {
+  it('should be able to authenticate a deliverer', async () => {
     const createdDeliverer = makeDeliverer({
       cpf: '12345678909',
       password: 'johndoe123456@deliverer-hashed',

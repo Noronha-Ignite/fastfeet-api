@@ -7,7 +7,7 @@ import { faker } from '@faker-js/faker'
 import { generateRandomCPF } from '../utils/generateRandomCpf'
 
 export const makeDeliverer = (
-  override: Partial<DelivererProps>,
+  override: Partial<DelivererProps> = {},
   id?: UniqueEntityID,
 ) => {
   const deliverer = Deliverer.create(

@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker'
 import { generateRandomCPF } from '../utils/generateRandomCpf'
 
 export const makeAdmin = (
-  override: Partial<AdminProps>,
+  override: Partial<AdminProps> = {},
   id?: UniqueEntityID,
 ) => {
   const admin = Admin.create(
