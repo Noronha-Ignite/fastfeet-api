@@ -2,8 +2,6 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { RegisterDelivererUseCase } from './register-deliverer'
 import { FakeHasher } from '@/test/cryptography/fake-hasher'
 import { InMemoryDeliverersRepository } from '@/test/repositories/in-memory-deliverers-repository'
-import { InvalidCpfFormatError } from './errors/invalid-cpf-format-error'
-import { InvalidEmailFormatError } from './errors/invalid-email-format-error '
 import { makeDeliverer } from '@/test/factories/make-deliverer-factory'
 import { generateRandomCPF } from '@/test/utils/generateRandomCpf'
 import { DelivererAlreadyExistsError } from './errors/deliverer-already-exists-error'
@@ -81,29 +79,5 @@ describe('Register deliverer use case', () => {
 
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(DelivererAlreadyExistsError)
-  })
-
-  it('should not create an deliverer with an invalid cpf format', async () => {
-    const result = await sut.execute({
-      cpf: 'invalid-cpf',
-      email: 'johndoe@example.com',
-      name: 'John Doe',
-      password: 'johndoe123456@deliverer',
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(InvalidCpfFormatError)
-  })
-
-  it('should not create an deliverer with an invalid email format', async () => {
-    const result = await sut.execute({
-      cpf: '12345678909',
-      email: 'invalid-email',
-      name: 'John Doe',
-      password: 'johndoe123456@deliverer',
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(InvalidEmailFormatError)
   })
 })

@@ -1,6 +1,5 @@
 import { Either, left, right } from '@/core/either'
 import { AdminsRepository } from '../repositories/admins-repository'
-import { validateCpf } from '@/utils/validation'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 import { Encrypter } from '../cryptography/encrypter'
 import { Hasher } from '../cryptography/hasher'
@@ -28,12 +27,6 @@ export class AuthenticateAdminUseCase {
     cpf,
     password,
   }: AuthenticateAdminUseCaseRequest): Promise<AuthenticateAdminUseCaseResponse> {
-    const isCpfValid = validateCpf(cpf)
-
-    if (!isCpfValid) {
-      return left(new InvalidCredentialsError())
-    }
-
     const existingAdmin = await this.adminsRepository.findByCpf(cpf)
 
     if (!existingAdmin) {

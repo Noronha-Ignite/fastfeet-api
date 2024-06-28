@@ -3,9 +3,6 @@ import { Deliverer } from '../../enterprise/entities/deliverer'
 import { DeliverersRepository } from '../repositories/deliverers-repository'
 import { DelivererAlreadyExistsError } from './errors/deliverer-already-exists-error'
 import { Hasher } from '../cryptography/hasher'
-import { InvalidCpfFormatError } from './errors/invalid-cpf-format-error'
-import { validateCpf, validateEmail } from '@/utils/validation'
-import { InvalidEmailFormatError } from './errors/invalid-email-format-error '
 
 type RegisterDelivererUseCaseRequest = {
   name: string
@@ -15,7 +12,7 @@ type RegisterDelivererUseCaseRequest = {
 }
 
 type RegisterDelivererUseCaseResponse = Either<
-  DelivererAlreadyExistsError | InvalidCpfFormatError | InvalidEmailFormatError,
+  DelivererAlreadyExistsError,
   {
     deliverer: Deliverer
   }
@@ -33,18 +30,6 @@ export class RegisterDelivererUseCase {
     name,
     password,
   }: RegisterDelivererUseCaseRequest): Promise<RegisterDelivererUseCaseResponse> {
-    const isCpfValid = validateCpf(cpf)
-
-    if (!isCpfValid) {
-      return left(new InvalidCpfFormatError())
-    }
-
-    const isEmailValid = validateEmail(email)
-
-    if (!isEmailValid) {
-      return left(new InvalidEmailFormatError())
-    }
-
     const delivererWithSameCpf = await this.deliverersRepository.findByCpf(cpf)
 
     if (delivererWithSameCpf) {

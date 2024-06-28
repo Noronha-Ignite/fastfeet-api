@@ -67,14 +67,4 @@ describe('Authenticate deliverer use case', () => {
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(InvalidCredentialsError)
   })
-
-  it('should not create an deliverer with an invalid cpf format', async () => {
-    const result = await sut.execute({
-      cpf: 'invalid-cpf',
-      password: 'some-password',
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(InvalidCredentialsError)
-  })
 })

@@ -1,6 +1,5 @@
 import { Either, left, right } from '@/core/either'
 import { DeliverersRepository } from '../repositories/deliverers-repository'
-import { validateCpf } from '@/utils/validation'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 import { Encrypter } from '../cryptography/encrypter'
 import { Hasher } from '../cryptography/hasher'
@@ -28,12 +27,6 @@ export class AuthenticateDelivererUseCase {
     cpf,
     password,
   }: AuthenticateDelivererUseCaseRequest): Promise<AuthenticateDelivererUseCaseResponse> {
-    const isCpfValid = validateCpf(cpf)
-
-    if (!isCpfValid) {
-      return left(new InvalidCredentialsError())
-    }
-
     const existingDeliverer = await this.deliverersRepository.findByCpf(cpf)
 
     if (!existingDeliverer) {

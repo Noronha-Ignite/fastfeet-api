@@ -2,8 +2,6 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { RegisterAdminUseCase } from './register-admin'
 import { FakeHasher } from '@/test/cryptography/fake-hasher'
 import { InMemoryAdminsRepository } from '@/test/repositories/in-memory-admins-repository'
-import { InvalidCpfFormatError } from './errors/invalid-cpf-format-error'
-import { InvalidEmailFormatError } from './errors/invalid-email-format-error '
 import { makeAdmin } from '@/test/factories/make-admin-factory'
 import { generateRandomCPF } from '@/test/utils/generateRandomCpf'
 import { AdminAlreadyExistsError } from './errors/admin-already-exists-error'
@@ -81,29 +79,5 @@ describe('Register admin use case', () => {
 
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(AdminAlreadyExistsError)
-  })
-
-  it('should not create an admin with an invalid cpf format', async () => {
-    const result = await sut.execute({
-      cpf: 'invalid-cpf',
-      email: 'johndoe@example.com',
-      name: 'John Doe',
-      password: 'johndoe123456@admin',
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(InvalidCpfFormatError)
-  })
-
-  it('should not create an admin with an invalid email format', async () => {
-    const result = await sut.execute({
-      cpf: '12345678909',
-      email: 'invalid-email',
-      name: 'John Doe',
-      password: 'johndoe123456@admin',
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(InvalidEmailFormatError)
   })
 })
