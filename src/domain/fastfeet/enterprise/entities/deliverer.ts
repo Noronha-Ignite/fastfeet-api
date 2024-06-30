@@ -28,6 +28,12 @@ export class Deliverer extends Entity<DelivererProps> {
     return this.props.name
   }
 
+  set name(name: string) {
+    this.props.name = name
+
+    this.touch()
+  }
+
   get cpf() {
     return this.props.cpf
   }

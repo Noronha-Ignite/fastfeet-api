@@ -12,6 +12,16 @@ export class InMemoryDeliverersRepository implements DeliverersRepository {
     this.items = this.items.filter((item) => !item.id.isEqualTo(deliverer.id))
   }
 
+  async save(deliverer: Deliverer): Promise<void> {
+    this.items = this.items.map((item) => {
+      if (item.id.isEqualTo(deliverer.id)) {
+        return deliverer
+      }
+
+      return item
+    })
+  }
+
   async findByCpf(cpf: string): Promise<Deliverer | null> {
     return this.items.find((item) => item.cpf === cpf) ?? null
   }
