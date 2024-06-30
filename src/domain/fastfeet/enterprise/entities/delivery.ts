@@ -1,7 +1,7 @@
-import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { DeliveryStatus } from './value-objects/delivery-status'
 import { Optional } from '@/core/types/optional'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
 
 type DeliveryProps = {
   packageId: UniqueEntityID
@@ -13,13 +13,18 @@ type DeliveryProps = {
   status: DeliveryStatus
 }
 
-type DeliveryPayload = Optional<DeliveryProps, 'createdAt'>
+type DeliveryPayload = Optional<
+  DeliveryProps,
+  'createdAt' | 'status' | 'delivererId'
+>
 
-export class Delivery extends Entity<DeliveryProps> {
+export class Delivery extends AggregateRoot<DeliveryProps> {
   static create(props: DeliveryPayload, id?: UniqueEntityID) {
     return new Delivery(
       {
         createdAt: new Date(),
+        delivererId: null,
+        status: DeliveryStatus.create(),
         ...props,
       },
       id,
