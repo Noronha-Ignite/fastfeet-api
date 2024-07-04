@@ -3,6 +3,8 @@ import { RegisterRecipientUseCase } from './register-recipient'
 import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository'
 import { InMemoryAddressesRepository } from '@/test/repositories/in-memory-addresses-repository'
 import { makeAddress } from '@/test/factories/make-address'
+import { makeRecipient } from '@/test/factories/make-recipient'
+import { RecipientAlreadyExistsError } from './errors/recipient-already-exists-error'
 
 let inMemoryRecipientsRepository: InMemoryRecipientsRepository
 let inMemoryAddressesRepository: InMemoryAddressesRepository
@@ -88,5 +90,28 @@ describe('Register recipient use case', () => {
         zipCode: '50000-555',
       }),
     )
+  })
+
+  it('should not register an already existing recipient', async () => {
+    const recipient = makeRecipient({
+      email: 'johndoe@example.com',
+    })
+
+    inMemoryRecipientsRepository.items.push(recipient)
+
+    const result = await sut.execute({
+      email: 'johndoe@example.com',
+      name: 'John Doe',
+      address: {
+        city: 'Recife',
+        number: '123',
+        street: 'Rua Presidente Legal',
+        uf: 'PE',
+        zipCode: '50000-555',
+      },
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(RecipientAlreadyExistsError)
   })
 })

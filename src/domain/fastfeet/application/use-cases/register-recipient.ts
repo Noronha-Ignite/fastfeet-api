@@ -38,6 +38,13 @@ export class RegisterRecipientUseCase {
     name,
     address: recipientAddress,
   }: RegisterRecipientUseCaseRequest): Promise<RegisterRecipientUseCaseResponse> {
+    const exisitingRecipient =
+      await this.recipientsRepository.findByEmail(email)
+
+    if (exisitingRecipient) {
+      return left(new RecipientAlreadyExistsError(email))
+    }
+
     let address = await this.addressesRepository.findByZipCodeAndNumber(
       recipientAddress.zipCode,
       recipientAddress.number,
@@ -49,13 +56,6 @@ export class RegisterRecipientUseCase {
       address = newAddress
 
       await this.addressesRepository.create(newAddress)
-    }
-
-    const exisitingRecipient =
-      await this.recipientsRepository.findByEmail(email)
-
-    if (exisitingRecipient) {
-      return left(new RecipientAlreadyExistsError(email))
     }
 
     const recipient = Recipient.create({
