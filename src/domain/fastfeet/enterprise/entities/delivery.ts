@@ -5,12 +5,10 @@ import { AggregateRoot } from '@/core/entities/aggregate-root'
 
 type DeliveryProps = {
   packageId: UniqueEntityID
-  fromAddressId: UniqueEntityID
-  toAddressId: UniqueEntityID
-  delivererId: UniqueEntityID | null
+  status: DeliveryStatus
+  delivererId?: UniqueEntityID | null
   createdAt: Date
   updatedAt?: Date | null
-  status: DeliveryStatus
 }
 
 type DeliveryPayload = Optional<
@@ -35,19 +33,11 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     return this.props.packageId
   }
 
-  get fromAddressId() {
-    return this.props.fromAddressId
-  }
-
-  get toAddressId() {
-    return this.props.toAddressId
-  }
-
   get delivererId() {
     return this.props.delivererId
   }
 
-  set delivererId(id: UniqueEntityID | null) {
+  set delivererId(id: UniqueEntityID | null | undefined) {
     this.delivererId = id
 
     this.touch()
