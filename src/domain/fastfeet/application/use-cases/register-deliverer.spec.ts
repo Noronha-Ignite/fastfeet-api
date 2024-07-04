@@ -2,7 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { RegisterDelivererUseCase } from './register-deliverer'
 import { FakeHasher } from '@/test/cryptography/fake-hasher'
 import { InMemoryDeliverersRepository } from '@/test/repositories/in-memory-deliverers-repository'
-import { makeDeliverer } from '@/test/factories/make-deliverer-factory'
+import { makeDeliverer } from '@/test/factories/make-deliverer'
 import { generateRandomCPF } from '@/test/utils/generateRandomCpf'
 import { DelivererAlreadyExistsError } from './errors/deliverer-already-exists-error'
 

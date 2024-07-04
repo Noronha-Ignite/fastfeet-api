@@ -1,5 +1,5 @@
 import { InMemoryDeliverersRepository } from '@/test/repositories/in-memory-deliverers-repository'
-import { makeDeliverer } from '@/test/factories/make-deliverer-factory'
+import { makeDeliverer } from '@/test/factories/make-deliverer'
 import { ChangeDelivererNameUseCase } from './change-deliverer-name'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
 

@@ -13,6 +13,7 @@ export const makeRecipient = (
     {
       addressId: new UniqueEntityID(),
       name: faker.person.fullName(),
+      email: faker.internet.email(),
       ...override,
     },
     id,

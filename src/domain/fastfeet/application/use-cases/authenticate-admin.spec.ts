@@ -1,7 +1,7 @@
 import { AuthenticateAdminUseCase } from './authenticate-admin'
 import { FakeHasher } from '@/test/cryptography/fake-hasher'
 import { InMemoryAdminsRepository } from '@/test/repositories/in-memory-admins-repository'
-import { makeAdmin } from '@/test/factories/make-admin-factory'
+import { makeAdmin } from '@/test/factories/make-admin'
 import { FakeEncrypter } from '@/test/cryptography/fake-encrypter'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 

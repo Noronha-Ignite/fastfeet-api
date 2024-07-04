@@ -2,7 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { RegisterAdminUseCase } from './register-admin'
 import { FakeHasher } from '@/test/cryptography/fake-hasher'
 import { InMemoryAdminsRepository } from '@/test/repositories/in-memory-admins-repository'
-import { makeAdmin } from '@/test/factories/make-admin-factory'
+import { makeAdmin } from '@/test/factories/make-admin'
 import { generateRandomCPF } from '@/test/utils/generateRandomCpf'
 import { AdminAlreadyExistsError } from './errors/admin-already-exists-error'
 

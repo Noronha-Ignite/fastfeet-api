@@ -1,7 +1,7 @@
 import { AuthenticateDelivererUseCase } from './authenticate-deliverer'
 import { FakeHasher } from '@/test/cryptography/fake-hasher'
 import { InMemoryDeliverersRepository } from '@/test/repositories/in-memory-deliverers-repository'
-import { makeDeliverer } from '@/test/factories/make-deliverer-factory'
+import { makeDeliverer } from '@/test/factories/make-deliverer'
 import { FakeEncrypter } from '@/test/cryptography/fake-encrypter'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 

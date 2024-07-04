@@ -2,6 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { DeliveryStatus } from './value-objects/delivery-status'
 import { Optional } from '@/core/types/optional'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
+import { DeliveryStatusChangedEvent } from '../events/delivery-status-changed-event'
 
 type DeliveryProps = {
   packageId: UniqueEntityID
@@ -60,6 +61,8 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
   }
 
   public nextStatus() {
+    this.addDomainEvent(new DeliveryStatusChangedEvent(this))
+
     return this.props.status.next()
   }
 }

@@ -1,8 +1,8 @@
 import { DeleteDelivererUseCase } from './delete-deliverer'
 import { InMemoryDeliverersRepository } from '@/test/repositories/in-memory-deliverers-repository'
-import { makeDeliverer } from '@/test/factories/make-deliverer-factory'
+import { makeDeliverer } from '@/test/factories/make-deliverer'
 import { InMemoryAdminsRepository } from '@/test/repositories/in-memory-admins-repository'
-import { makeAdmin } from '@/test/factories/make-admin-factory'
+import { makeAdmin } from '@/test/factories/make-admin'
 import { NotAllowedError } from '@/core/errors/general/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
 

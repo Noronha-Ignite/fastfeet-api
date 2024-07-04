@@ -4,6 +4,7 @@ import { Optional } from '@/core/types/optional'
 
 export type RecipientProps = {
   name: string
+  email: string
   addressId: UniqueEntityID
   createdAt: Date
 }
@@ -27,5 +28,13 @@ export class Recipient extends Entity<RecipientProps> {
 
   get addressId() {
     return this.props.addressId
+  }
+
+  get email() {
+    return this.props.email
+  }
+
+  get createdAt() {
+    return this.props.createdAt
   }
 }
