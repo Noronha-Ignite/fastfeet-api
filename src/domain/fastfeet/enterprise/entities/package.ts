@@ -3,8 +3,9 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 import { Slug } from './value-objects/slug'
 import { randomBytes } from 'crypto'
+import { PackageCreatedEvent } from '../events/package-created-event'
 
-type PackageProps = {
+export type PackageProps = {
   title: string
   slug: Slug
   deliveredImageUrl?: string | null
@@ -27,6 +28,12 @@ export class Package extends AggregateRoot<PackageProps> {
       },
       id,
     )
+
+    const isNew = !id
+
+    if (isNew) {
+      packageCreated.addDomainEvent(new PackageCreatedEvent(packageCreated))
+    }
 
     return packageCreated
   }

@@ -5,6 +5,13 @@ export enum DeliveryStatuses {
   Returned = 'Returned',
 }
 
+const DeliveryStatusLabel: Record<DeliveryStatuses, string> = {
+  [DeliveryStatuses.WaitingForPickUp]: 'Waiting for pick up',
+  [DeliveryStatuses.InTransit]: 'In transit',
+  [DeliveryStatuses.Delivered]: 'Delivered',
+  [DeliveryStatuses.Returned]: 'Returned',
+}
+
 export class DeliveryStatus {
   private statuses = [
     DeliveryStatuses.WaitingForPickUp,
@@ -41,5 +48,9 @@ export class DeliveryStatus {
     }
 
     return this.current
+  }
+
+  get label() {
+    return DeliveryStatusLabel[this.current]
   }
 }

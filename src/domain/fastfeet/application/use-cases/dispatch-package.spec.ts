@@ -1,46 +1,45 @@
 import { InMemoryDeliveriesRepository } from '@/test/repositories/in-memory-deliveries-repository'
 import { DispatchPackageUseCase } from './dispatch-package'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
-import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository'
 import { InMemoryPackagesRepository } from '@/test/repositories/in-memory-packages-repository'
-import { makeRecipient } from '@/test/factories/make-recipient'
+import { makePackage } from '@/test/factories/make-package'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 let inMemoryDeliveriesRepository: InMemoryDeliveriesRepository
 let inMemoryPackagesRepository: InMemoryPackagesRepository
-let inMemoryRecipientsRepository: InMemoryRecipientsRepository
 let sut: DispatchPackageUseCase
 
 describe('Dispatch package use case', () => {
   beforeEach(() => {
     inMemoryPackagesRepository = new InMemoryPackagesRepository()
     inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository()
-    inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     sut = new DispatchPackageUseCase(
       inMemoryPackagesRepository,
       inMemoryDeliveriesRepository,
-      inMemoryRecipientsRepository,
     )
   })
 
   it('should be able to dispatch a package', async () => {
-    const recipient = makeRecipient()
+    const packageCreated = makePackage()
 
-    inMemoryRecipientsRepository.items.push(recipient)
+    inMemoryPackagesRepository.items.push(packageCreated)
 
     const result = await sut.execute({
-      recipientId: recipient.id.toString(),
-      title: 'Package Recipient 1',
+      packageId: packageCreated.id.toString(),
     })
 
     expect(result.isRight()).toBe(true)
-    expect(inMemoryPackagesRepository.items).toHaveLength(1)
     expect(inMemoryDeliveriesRepository.items).toHaveLength(1)
+    expect(inMemoryDeliveriesRepository.items[0]).toEqual(
+      expect.objectContaining({
+        id: expect.any(UniqueEntityID),
+      }),
+    )
   })
 
-  it('should not be able to dispatch a package without a valid recipient', async () => {
+  it('should not be able to dispatch a non-existing package', async () => {
     const result = await sut.execute({
-      recipientId: 'unexistent-recipient',
-      title: 'Package Unexistent Recipient',
+      packageId: 'non-existing-package-id',
     })
 
     expect(result.isLeft()).toBe(true)

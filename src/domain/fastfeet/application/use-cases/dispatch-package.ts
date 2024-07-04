@@ -1,20 +1,16 @@
 import { Either, left, right } from '@/core/either'
-import { Package } from '../../enterprise/entities/package'
 import { Delivery } from '../../enterprise/entities/delivery'
 import { PackagesRepository } from '../repositories/package-repository'
 import { DeliveriesRepository } from '../repositories/deliveries-repository'
-import { RecipientsRepository } from '../repositories/recipients-repository'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
 
 type DispatchPackageUseCaseRequest = {
-  title: string
-  recipientId: string
+  packageId: string
 }
 
 type DispatchPackageUseCaseResponse = Either<
   ResourceNotFoundError,
   {
-    package: Package
     delivery: Delivery
   }
 >
@@ -23,36 +19,25 @@ export class DispatchPackageUseCase {
   constructor(
     private packagesRepository: PackagesRepository,
     private deliveriesRepository: DeliveriesRepository,
-    private recipientsRepository: RecipientsRepository,
   ) {}
 
   async execute({
-    title,
-    recipientId,
+    packageId,
   }: DispatchPackageUseCaseRequest): Promise<DispatchPackageUseCaseResponse> {
-    const recipient = await this.recipientsRepository.findById(recipientId)
+    const existingPackage = await this.packagesRepository.findById(packageId)
 
-    if (!recipient) {
+    if (!existingPackage) {
       return left(new ResourceNotFoundError())
     }
 
-    const packageToBeDelivered = Package.create({
-      title,
-      recipientId: recipient.id,
-    })
-
     const delivery = Delivery.create({
-      packageId: packageToBeDelivered.id,
+      packageId: existingPackage.id,
     })
 
-    await Promise.all([
-      this.packagesRepository.create(packageToBeDelivered),
-      this.deliveriesRepository.create(delivery),
-    ])
+    await this.deliveriesRepository.create(delivery)
 
     return right({
       delivery,
-      package: packageToBeDelivered,
     })
   }
 }

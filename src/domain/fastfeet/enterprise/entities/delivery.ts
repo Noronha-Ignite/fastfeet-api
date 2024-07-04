@@ -19,7 +19,7 @@ type DeliveryPayload = Optional<
 
 export class Delivery extends AggregateRoot<DeliveryProps> {
   static create(props: DeliveryPayload, id?: UniqueEntityID) {
-    return new Delivery(
+    const delivery = new Delivery(
       {
         createdAt: new Date(),
         delivererId: null,
@@ -28,6 +28,10 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
       },
       id,
     )
+
+    delivery.addDomainEvent(new DeliveryStatusChangedEvent(delivery))
+
+    return delivery
   }
 
   get packageId() {

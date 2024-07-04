@@ -7,4 +7,8 @@ export class InMemoryPackagesRepository implements PackagesRepository {
   async create(recipientPackage: Package): Promise<void> {
     this.items.push(recipientPackage)
   }
+
+  async findById(id: string): Promise<Package | null> {
+    return this.items.find((item) => item.id.toString() === id) ?? null
+  }
 }
