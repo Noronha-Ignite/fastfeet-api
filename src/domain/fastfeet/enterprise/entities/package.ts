@@ -21,7 +21,7 @@ export class Package extends AggregateRoot<PackageProps> {
       {
         createdAt: new Date(),
         slug: Slug.createFromText(
-          props.title.concat(randomBytes(4).toString('hex')),
+          props.title.concat('-').concat(randomBytes(4).toString('hex')),
         ),
         ...props,
       },
