@@ -1,10 +1,13 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { DeliveryStatus } from './value-objects/delivery-status'
+import {
+  DeliveryStatus,
+  DeliveryStatuses,
+} from './value-objects/delivery-status'
 import { Optional } from '@/core/types/optional'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { DeliveryStatusChangedEvent } from '../events/delivery-status-changed-event'
 
-type DeliveryProps = {
+export type DeliveryProps = {
   packageId: UniqueEntityID
   status: DeliveryStatus
   delivererId?: UniqueEntityID | null
@@ -43,7 +46,11 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
   }
 
   set delivererId(id: UniqueEntityID | null | undefined) {
-    this.delivererId = id
+    this.props.delivererId = id
+
+    if (this.status.current === DeliveryStatuses.WaitingForPickUp) {
+      this.nextStatus()
+    }
 
     this.touch()
   }

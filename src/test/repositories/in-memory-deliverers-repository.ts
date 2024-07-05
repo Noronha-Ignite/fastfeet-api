@@ -29,4 +29,8 @@ export class InMemoryDeliverersRepository implements DeliverersRepository {
   async findByEmail(email: string): Promise<Deliverer | null> {
     return this.items.find((item) => item.email === email) ?? null
   }
+
+  async findById(id: string): Promise<Deliverer | null> {
+    return this.items.find((item) => item.id.toString() === id) ?? null
+  }
 }
