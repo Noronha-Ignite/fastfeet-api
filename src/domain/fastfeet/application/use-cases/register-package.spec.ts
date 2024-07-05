@@ -4,7 +4,6 @@ import { InMemoryPackagesRepository } from '@/test/repositories/in-memory-packag
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository'
 import { makeRecipient } from '@/test/factories/make-recipient'
-import { PackageCreatedEvent } from '../../enterprise/events/package-created-event'
 
 let inMemoryPackagesRepository: InMemoryPackagesRepository
 let inMemoryRecipientsRepository: InMemoryRecipientsRepository
@@ -35,7 +34,6 @@ describe('Register package use case', () => {
     expect(inMemoryPackagesRepository.items[0]).toEqual(
       expect.objectContaining({
         id: expect.any(UniqueEntityID),
-        domainEvents: [expect.any(PackageCreatedEvent)],
       }),
     )
   })

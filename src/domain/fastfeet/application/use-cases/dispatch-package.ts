@@ -4,11 +4,11 @@ import { PackagesRepository } from '../repositories/package-repository'
 import { DeliveriesRepository } from '../repositories/deliveries-repository'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
 
-type DispatchPackageUseCaseRequest = {
+export type DispatchPackageUseCaseRequest = {
   packageId: string
 }
 
-type DispatchPackageUseCaseResponse = Either<
+export type DispatchPackageUseCaseResponse = Either<
   ResourceNotFoundError,
   {
     delivery: Delivery
