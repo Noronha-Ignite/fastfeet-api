@@ -1,6 +1,5 @@
 import { Either, left, right } from '@/core/either'
 import { AdminsRepository } from '../repositories/admins-repository'
-import { AdminAlreadyExistsError } from './errors/admin-already-exists-error'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
 import { Hasher } from '../cryptography/hasher'
 
@@ -9,7 +8,7 @@ type ChangeAdminPasswordUseCaseRequest = {
   newPassword: string
 }
 
-type ChangeAdminPasswordUseCaseResponse = Either<AdminAlreadyExistsError, null>
+type ChangeAdminPasswordUseCaseResponse = Either<ResourceNotFoundError, null>
 
 export class ChangeAdminPasswordUseCase {
   constructor(

@@ -1,6 +1,5 @@
 import { Either, left, right } from '@/core/either'
 import { DeliverersRepository } from '../repositories/deliverers-repository'
-import { DelivererAlreadyExistsError } from './errors/deliverer-already-exists-error'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
 
 type ChangeDelivererNameUseCaseRequest = {
@@ -8,10 +7,7 @@ type ChangeDelivererNameUseCaseRequest = {
   cpf: string
 }
 
-type ChangeDelivererNameUseCaseResponse = Either<
-  DelivererAlreadyExistsError,
-  null
->
+type ChangeDelivererNameUseCaseResponse = Either<ResourceNotFoundError, null>
 
 export class ChangeDelivererNameUseCase {
   constructor(private deliverersRepository: DeliverersRepository) {}
