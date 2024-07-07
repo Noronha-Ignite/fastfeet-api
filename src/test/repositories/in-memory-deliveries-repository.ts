@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core/repositories/pagination-params'
 import { DeliveriesRepository } from '@/domain/fastfeet/application/repositories/deliveries-repository'
 import { Delivery } from '@/domain/fastfeet/enterprise/entities/delivery'
 
@@ -22,5 +23,18 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
     return (
       this.items.find((item) => item.packageId.toString() === packageId) ?? null
     )
+  }
+
+  async findManyByDelivererId(
+    delivererId: string,
+    { page }: PaginationParams,
+  ): Promise<Delivery[]> {
+    const TAKE_PER_PAGE = 20
+
+    const items = this.items
+      .filter((item) => item.delivererId?.toString() === delivererId)
+      .slice((page - 1) * TAKE_PER_PAGE, page * TAKE_PER_PAGE)
+
+    return items
   }
 }
