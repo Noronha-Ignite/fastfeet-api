@@ -7,6 +7,7 @@ export type DelivererProps = {
   cpf: string
   email: string
   password: string
+  addressId: UniqueEntityID
   createdAt: Date
   updatedAt?: Date | null
 }
@@ -50,6 +51,10 @@ export class Deliverer extends Entity<DelivererProps> {
     this.props.password = password
 
     this.touch()
+  }
+
+  get addressId() {
+    return this.props.addressId
   }
 
   get createdAt() {

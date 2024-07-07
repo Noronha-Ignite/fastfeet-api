@@ -8,6 +8,16 @@ export class InMemoryAdminsRepository implements AdminsRepository {
     this.items.push(admin)
   }
 
+  async save(admin: Admin): Promise<void> {
+    this.items.map((item) => {
+      if (item.id.isEqualTo(admin.id)) {
+        return admin
+      }
+
+      return item
+    })
+  }
+
   async findByCpf(cpf: string): Promise<Admin | null> {
     return this.items.find((item) => item.cpf === cpf) ?? null
   }

@@ -5,16 +5,23 @@ import { InMemoryDeliverersRepository } from '@/test/repositories/in-memory-deli
 import { makeDeliverer } from '@/test/factories/make-deliverer'
 import { generateRandomCPF } from '@/test/utils/generateRandomCpf'
 import { DelivererAlreadyExistsError } from './errors/deliverer-already-exists-error'
+import { InMemoryAddressesRepository } from '@/test/repositories/in-memory-addresses-repository'
 
 let inMemoryDeliverersRepository: InMemoryDeliverersRepository
+let inMemoryAddressesRepository: InMemoryAddressesRepository
 let fakeHasher: FakeHasher
 let sut: RegisterDelivererUseCase
 
 describe('Register deliverer use case', () => {
   beforeEach(() => {
     inMemoryDeliverersRepository = new InMemoryDeliverersRepository()
+    inMemoryAddressesRepository = new InMemoryAddressesRepository()
     fakeHasher = new FakeHasher()
-    sut = new RegisterDelivererUseCase(inMemoryDeliverersRepository, fakeHasher)
+    sut = new RegisterDelivererUseCase(
+      inMemoryDeliverersRepository,
+      inMemoryAddressesRepository,
+      fakeHasher,
+    )
   })
 
   it('should be able to register a new deliverer', async () => {
@@ -23,6 +30,13 @@ describe('Register deliverer use case', () => {
       email: 'johndoe@example.com',
       name: 'John Doe',
       password: 'johndoe123456@deliverer',
+      address: {
+        city: 'Shiny city',
+        number: '7',
+        street: 'Dream St.',
+        uf: 'District 13',
+        zipCode: '77777-777',
+      },
     })
 
     expect(result.isRight()).toBe(true)
@@ -56,6 +70,13 @@ describe('Register deliverer use case', () => {
       email: 'johndoe@example.com',
       name: 'John Doe',
       password: 'johndoe123456@deliverer',
+      address: {
+        city: 'Shiny city',
+        number: '7',
+        street: 'Dream St.',
+        uf: 'District 13',
+        zipCode: '77777-777',
+      },
     })
 
     expect(result.isLeft()).toBe(true)
@@ -75,6 +96,13 @@ describe('Register deliverer use case', () => {
       email: 'same-email@example.com',
       name: 'John Doe',
       password: 'johndoe123456@deliverer',
+      address: {
+        city: 'Shiny city',
+        number: '7',
+        street: 'Dream St.',
+        uf: 'District 13',
+        zipCode: '77777-777',
+      },
     })
 
     expect(result.isLeft()).toBe(true)
