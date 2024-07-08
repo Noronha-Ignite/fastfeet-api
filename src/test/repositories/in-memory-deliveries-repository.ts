@@ -1,9 +1,12 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { DeliveriesRepository } from '@/domain/fastfeet/application/repositories/deliveries-repository'
 import { Delivery } from '@/domain/fastfeet/enterprise/entities/delivery'
+import { InMemoryAddressesRepository } from './in-memory-addresses-repository'
 
 export class InMemoryDeliveriesRepository implements DeliveriesRepository {
   items: Delivery[] = []
+
+  constructor(private addressesRepository: InMemoryAddressesRepository) {}
 
   async create(delivery: Delivery): Promise<void> {
     this.items.push(delivery)
@@ -36,5 +39,22 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
       .slice((page - 1) * TAKE_PER_PAGE, page * TAKE_PER_PAGE)
 
     return items
+  }
+
+  async findAllWaitingForPickupByCity(city: string): Promise<Delivery[]> {
+    const itemsWithAddresses = await Promise.all(
+      this.items.map(async (item) => ({
+        delivery: item,
+        address: await this.addressesRepository.findById(
+          item.destinationAddressId.toString(),
+        ),
+      })),
+    )
+
+    const data = itemsWithAddresses
+      .filter((item) => item.address?.city === city)
+      .map((item) => item.delivery)
+
+    return data
   }
 }
