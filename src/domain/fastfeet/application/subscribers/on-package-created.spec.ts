@@ -12,8 +12,12 @@ import { InMemoryDeliveriesRepository } from '@/test/repositories/in-memory-deli
 import { InMemoryPackagesRepository } from '@/test/repositories/in-memory-packages-repository'
 import { OnPackageCreated } from './on-package-created'
 import { waitFor } from '@/test/utils/wait-for'
+import { InMemoryAddressesRepository } from '@/test/repositories/in-memory-addresses-repository'
+import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository'
 
 let inMemoryPackagesRepository: InMemoryPackagesRepository
+let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+let inMemoryAddressesRepository: InMemoryAddressesRepository
 let inMemoryDeliveriesRepository: InMemoryDeliveriesRepository
 let dispatchPackageUseCase: DispatchPackageUseCase
 
@@ -25,9 +29,15 @@ let dispatchPackageExecuteSpy: MockInstance<
 describe('on package created', () => {
   beforeEach(() => {
     inMemoryPackagesRepository = new InMemoryPackagesRepository()
-    inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository()
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
+    inMemoryAddressesRepository = new InMemoryAddressesRepository()
+    inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository(
+      inMemoryAddressesRepository,
+    )
     dispatchPackageUseCase = new DispatchPackageUseCase(
       inMemoryPackagesRepository,
+      inMemoryRecipientsRepository,
+      inMemoryAddressesRepository,
       inMemoryDeliveriesRepository,
     )
 

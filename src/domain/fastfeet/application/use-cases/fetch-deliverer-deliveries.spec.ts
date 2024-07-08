@@ -3,13 +3,18 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { FetchDelivererDeliveriesUseCase } from './fetch-deliverer-deliveries'
 import { makeDelivery } from '@/test/factories/make-delivery'
 import { makeDeliverer } from '@/test/factories/make-deliverer'
+import { InMemoryAddressesRepository } from '@/test/repositories/in-memory-addresses-repository'
 
+let inMemoryAddressesRepository: InMemoryAddressesRepository
 let inMemoryDeliveriesRepository: InMemoryDeliveriesRepository
 let sut: FetchDelivererDeliveriesUseCase
 
 describe('Fetch deliverer deliveries use case', () => {
   beforeEach(() => {
-    inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository()
+    inMemoryAddressesRepository = new InMemoryAddressesRepository()
+    inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository(
+      inMemoryAddressesRepository,
+    )
     sut = new FetchDelivererDeliveriesUseCase(inMemoryDeliveriesRepository)
   })
 

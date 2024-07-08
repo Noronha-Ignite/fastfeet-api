@@ -11,6 +11,7 @@ export const makeDelivery = (
   const delivery = Delivery.create(
     {
       packageId: new UniqueEntityID(),
+      destinationAddressId: new UniqueEntityID(),
       ...override,
     },
     id,

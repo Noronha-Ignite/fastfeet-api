@@ -4,24 +4,44 @@ import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-
 import { InMemoryPackagesRepository } from '@/test/repositories/in-memory-packages-repository'
 import { makePackage } from '@/test/factories/make-package'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository'
+import { InMemoryAddressesRepository } from '@/test/repositories/in-memory-addresses-repository'
+import { makeRecipient } from '@/test/factories/make-recipient'
+import { makeAddress } from '@/test/factories/make-address'
 
 let inMemoryDeliveriesRepository: InMemoryDeliveriesRepository
+let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+let inMemoryAddressesRepository: InMemoryAddressesRepository
 let inMemoryPackagesRepository: InMemoryPackagesRepository
 let sut: DispatchPackageUseCase
 
 describe('Dispatch package use case', () => {
   beforeEach(() => {
     inMemoryPackagesRepository = new InMemoryPackagesRepository()
-    inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository()
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
+    inMemoryAddressesRepository = new InMemoryAddressesRepository()
+    inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository(
+      inMemoryAddressesRepository,
+    )
     sut = new DispatchPackageUseCase(
       inMemoryPackagesRepository,
+      inMemoryRecipientsRepository,
+      inMemoryAddressesRepository,
       inMemoryDeliveriesRepository,
     )
   })
 
   it('should be able to dispatch a package', async () => {
-    const packageCreated = makePackage()
+    const address = makeAddress()
+    const recipient = makeRecipient({
+      addressId: address.id,
+    })
+    const packageCreated = makePackage({
+      recipientId: recipient.id,
+    })
 
+    inMemoryAddressesRepository.items.push(address)
+    inMemoryRecipientsRepository.items.push(recipient)
     inMemoryPackagesRepository.items.push(packageCreated)
 
     const result = await sut.execute({
@@ -33,6 +53,7 @@ describe('Dispatch package use case', () => {
     expect(inMemoryDeliveriesRepository.items[0]).toEqual(
       expect.objectContaining({
         id: expect.any(UniqueEntityID),
+        destinationAddressId: address.id,
       }),
     )
   })

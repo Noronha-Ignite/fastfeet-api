@@ -3,13 +3,16 @@ import { Delivery } from '../../enterprise/entities/delivery'
 import { PackagesRepository } from '../repositories/package-repository'
 import { DeliveriesRepository } from '../repositories/deliveries-repository'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
+import { RecipientsRepository } from '../repositories/recipients-repository'
+import { AddressesRepository } from '../repositories/address-repository'
+import { InvalidAddressError } from './errors/invalid-address-error'
 
 export type DispatchPackageUseCaseRequest = {
   packageId: string
 }
 
 export type DispatchPackageUseCaseResponse = Either<
-  ResourceNotFoundError,
+  ResourceNotFoundError | InvalidAddressError,
   {
     delivery: Delivery
   }
@@ -18,6 +21,8 @@ export type DispatchPackageUseCaseResponse = Either<
 export class DispatchPackageUseCase {
   constructor(
     private packagesRepository: PackagesRepository,
+    private recipientsRepository: RecipientsRepository,
+    private addressesRepository: AddressesRepository,
     private deliveriesRepository: DeliveriesRepository,
   ) {}
 
@@ -30,8 +35,27 @@ export class DispatchPackageUseCase {
       return left(new ResourceNotFoundError())
     }
 
+    console.log(this.recipientsRepository)
+
+    const recipient = await this.recipientsRepository.findById(
+      existingPackage.recipientId.toString(),
+    )
+
+    if (!recipient) {
+      return left(new ResourceNotFoundError())
+    }
+
+    const address = await this.addressesRepository.findById(
+      recipient.addressId.toString(),
+    )
+
+    if (!address) {
+      return left(new InvalidAddressError())
+    }
+
     const delivery = Delivery.create({
       packageId: existingPackage.id,
+      destinationAddressId: address.id,
     })
 
     await this.deliveriesRepository.create(delivery)

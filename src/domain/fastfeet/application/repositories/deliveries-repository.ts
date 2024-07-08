@@ -10,4 +10,6 @@ export abstract class DeliveriesRepository {
     delivererId: string,
     paginationParams: PaginationParams,
   ): Promise<Delivery[]>
+
+  abstract findAllWaitingForPickupByCity(city: string): Promise<Delivery[]>
 }

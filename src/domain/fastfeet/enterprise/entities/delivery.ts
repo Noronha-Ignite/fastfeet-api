@@ -11,6 +11,7 @@ export type DeliveryProps = {
   packageId: UniqueEntityID
   status: DeliveryStatus
   delivererId?: UniqueEntityID | null
+  destinationAddressId: UniqueEntityID
   createdAt: Date
   updatedAt?: Date | null
 }
@@ -43,6 +44,10 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
 
   get delivererId() {
     return this.props.delivererId
+  }
+
+  get destinationAddressId() {
+    return this.props.destinationAddressId
   }
 
   set delivererId(id: UniqueEntityID | null | undefined) {

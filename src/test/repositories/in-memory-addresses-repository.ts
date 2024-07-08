@@ -18,4 +18,8 @@ export class InMemoryAddressesRepository implements AddressesRepository {
       ) ?? null
     )
   }
+
+  async findById(id: string): Promise<Address | null> {
+    return this.items.find((item) => item.id.toString() === id) ?? null
+  }
 }
