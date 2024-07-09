@@ -48,7 +48,7 @@ describe('on delivery status changed', () => {
     )
   })
 
-  it.only('should send a notification when a delivery is created', async () => {
+  it('should send a notification when a delivery is created', async () => {
     const deliveryPackage = makePackage()
     const delivery = makeDelivery({
       packageId: deliveryPackage.id,
