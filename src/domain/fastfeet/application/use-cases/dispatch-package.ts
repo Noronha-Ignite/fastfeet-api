@@ -35,8 +35,6 @@ export class DispatchPackageUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    console.log(this.recipientsRepository)
-
     const recipient = await this.recipientsRepository.findById(
       existingPackage.recipientId.toString(),
     )
