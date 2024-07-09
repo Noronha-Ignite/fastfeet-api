@@ -38,6 +38,14 @@ export class Package extends AggregateRoot<PackageProps> {
     return packageCreated
   }
 
+  get title() {
+    return this.props.title
+  }
+
+  get slug() {
+    return this.props.slug
+  }
+
   get deliveredImageUrl() {
     return this.props.deliveredImageUrl
   }

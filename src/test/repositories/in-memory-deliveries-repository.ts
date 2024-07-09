@@ -2,6 +2,7 @@ import { PaginationParams } from '@/core/repositories/pagination-params'
 import { DeliveriesRepository } from '@/domain/fastfeet/application/repositories/deliveries-repository'
 import { Delivery } from '@/domain/fastfeet/enterprise/entities/delivery'
 import { InMemoryAddressesRepository } from './in-memory-addresses-repository'
+import { DomainEvents } from '@/core/events/domain-events'
 
 export class InMemoryDeliveriesRepository implements DeliveriesRepository {
   items: Delivery[] = []
@@ -10,6 +11,8 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
 
   async create(delivery: Delivery): Promise<void> {
     this.items.push(delivery)
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
   }
 
   async save(delivery: Delivery): Promise<void> {
@@ -20,6 +23,8 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
 
       return item
     })
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
   }
 
   async findByPackageId(packageId: string): Promise<Delivery | null> {
