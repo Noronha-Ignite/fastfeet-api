@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  DELVIERER
+}
+
+model User {
+  id        String     @id @default(uuid())
+  name      String
+  cpf       String     @unique
+  email     String     @unique
+  password  String
+  role      UserRole   @default(DELVIERER)
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime?  @updatedAt @map("updated_at")
+  Delivery  Delivery[]
+
+  @@map("users")
+}
+
+model Address {
+  id         String   @id @default(uuid())
+  uf         String
+  city       String
+  street     String
+  number     String
+  complement String?
+  zipCode    String   @map("zip_code")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  recipients Recipient[]
+  Delivery   Delivery[]
+
+  @@map("addresses")
+}
+
+model Recipient {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  createdAt DateTime @default(now()) @map("created_at")
+  addressId String   @map("address_id")
+
+  address      Address        @relation(fields: [addressId], references: [id])
+  packages     Package[]
+  Notification Notification[]
+
+  @@map("recipients")
+}
+
+model Package {
+  id                String    @id @default(uuid())
+  title             String
+  slug              String
+  deliveredImageUrl String?   @map("delivered_image_url")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime? @updatedAt @map("updated_at")
+  recipientId       String    @map("recipient_id")
+
+  recipient Recipient  @relation(fields: [recipientId], references: [id])
+  Delivery  Delivery[]
+
+  @@map("packages")
+}
+
+enum DeliveryStatus {
+  WAITING_FOR_PICKUP
+  IN_TRANSIT
+  DELIVERED
+  RETURNED
+}
+
+model Delivery {
+  id                   String         @id @default(uuid())
+  status               DeliveryStatus
+  createdAt            DateTime       @default(now()) @map("created_at")
+  updatedAt            DateTime?      @updatedAt @map("updated_at")
+  packageId            String         @map("package_id")
+  delivererId          String         @map("deliverer_id")
+  destinationAddressId String         @map("destination_address_id")
+
+  package            Package @relation(fields: [packageId], references: [id])
+  deliverer          User    @relation(fields: [delivererId], references: [id])
+  destinationAddress Address @relation(fields: [destinationAddressId], references: [id])
+
+  @@map("deliveries")
+}
+
+model Notification {
+  id                      String    @id @default(uuid())
+  title                   String
+  content                 String
+  createdAt               DateTime  @default(now()) @map("created_at")
+  readAt                  DateTime? @map("read_at")
+  notificationRecipientId String    @map("notification_recipient_id")
+
+  notificationRecipient Recipient @relation(fields: [notificationRecipientId], references: [id])
+
+  @@map("notifications")
+}
