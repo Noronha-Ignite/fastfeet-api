@@ -15,7 +15,7 @@ datasource db {
 
 enum UserRole {
   ADMIN
-  DELVIERER
+  DELIVERER
 }
 
 model User {
@@ -24,7 +24,7 @@ model User {
   cpf       String     @unique
   email     String     @unique
   password  String
-  role      UserRole   @default(DELVIERER)
+  role      UserRole   @default(DELIVERER)
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime?  @updatedAt @map("updated_at")
   Delivery  Delivery[]
