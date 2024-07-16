@@ -2,6 +2,9 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Admin, AdminProps } from '@/domain/fastfeet/enterprise/entities/admin'
 import { faker } from '@faker-js/faker'
 import { generateRandomCPF } from '../utils/generateRandomCpf'
+import { PrismaService } from '@/infra/http/database/prisma.service'
+import { Injectable } from '@nestjs/common'
+import { PrismaAdminMapper } from '@/infra/http/database/mappers/prisma-admin-mapper'
 
 export const makeAdmin = (
   override: Partial<AdminProps> = {},
@@ -20,4 +23,19 @@ export const makeAdmin = (
   )
 
   return admin
+}
+
+@Injectable()
+export class AdminFactory {
+  constructor(private prisma: PrismaService) {}
+
+  async makePrismaAdmin(override: Partial<AdminProps> = {}): Promise<Admin> {
+    const admin = makeAdmin(override)
+
+    await this.prisma.user.create({
+      data: PrismaAdminMapper.toPrisma(admin),
+    })
+
+    return admin
+  }
 }

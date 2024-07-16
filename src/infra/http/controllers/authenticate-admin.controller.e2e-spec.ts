@@ -1,5 +1,5 @@
 import { AppModule } from '@/infra/app.module'
-import { DelivererFactory } from '@/test/factories/make-deliverer'
+import { AdminFactory } from '@/test/factories/make-admin'
 import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
@@ -7,34 +7,34 @@ import { DatabaseModule } from '../database/database.module'
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { Hasher } from '@/domain/fastfeet/application/cryptography/hasher'
 
-describe('Authenticate Deliverer (E2E)', () => {
+describe('Authenticate Admin (E2E)', () => {
   let app: INestApplication
 
-  let delivererFactory: DelivererFactory
+  let adminFactory: AdminFactory
   let hasher: Hasher
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule, CryptographyModule],
-      providers: [DelivererFactory],
+      providers: [AdminFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
-    delivererFactory = moduleRef.get(DelivererFactory)
+    adminFactory = moduleRef.get(AdminFactory)
     hasher = moduleRef.get(Hasher)
 
     await app.init()
   })
 
-  test('[POST] /deliverer/sessions', async () => {
-    await delivererFactory.makePrismaDeliverer({
+  test('[POST] /admin/sessions', async () => {
+    await adminFactory.makePrismaAdmin({
       cpf: '12345678909',
       password: await hasher.hash('123456'),
     })
 
     const response = await request(app.getHttpServer())
-      .post('/deliverer/sessions')
+      .post('/admin/sessions')
       .send({
         cpf: '12345678909',
         password: '123456',

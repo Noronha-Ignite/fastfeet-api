@@ -3,10 +3,12 @@ import { AuthenticateDelivererService } from './services/authenticate-deliverer.
 import { AuthenticateDelivererController } from './controllers/authenticate-deliverer.controller'
 import { DatabaseModule } from './database/database.module'
 import { CryptographyModule } from './cryptography/cryptography.module'
+import { AuthenticateAdminService } from './services/authenticate-admin.service'
+import { AuthenticateAdminController } from './controllers/authenticate-admin.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
-  controllers: [AuthenticateDelivererController],
-  providers: [AuthenticateDelivererService],
+  controllers: [AuthenticateDelivererController, AuthenticateAdminController],
+  providers: [AuthenticateDelivererService, AuthenticateAdminService],
 })
 export class HttpModule {}

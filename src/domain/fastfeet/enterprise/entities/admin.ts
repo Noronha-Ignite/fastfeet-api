@@ -46,6 +46,10 @@ export class Admin extends Entity<AdminProps> {
     this.touch()
   }
 
+  get createdAt() {
+    return this.props.createdAt
+  }
+
   get updatedAt() {
     return this.props.updatedAt
   }
