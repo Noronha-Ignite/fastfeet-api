@@ -4,7 +4,7 @@ import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-
 import { Hasher } from '../cryptography/hasher'
 
 type ChangeAdminPasswordUseCaseRequest = {
-  cpf: string
+  adminId: string
   newPassword: string
 }
 
@@ -17,10 +17,10 @@ export class ChangeAdminPasswordUseCase {
   ) {}
 
   async execute({
-    cpf,
+    adminId,
     newPassword,
   }: ChangeAdminPasswordUseCaseRequest): Promise<ChangeAdminPasswordUseCaseResponse> {
-    const admin = await this.adminsRepository.findByCpf(cpf)
+    const admin = await this.adminsRepository.findById(adminId)
 
     if (!admin) {
       return left(new ResourceNotFoundError())

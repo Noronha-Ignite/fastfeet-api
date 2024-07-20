@@ -7,6 +7,7 @@ import { AuthenticateAdminService } from './services/authenticate-admin.service'
 import { AuthenticateAdminController } from './controllers/authenticate-admin.controller'
 import { ChangeAdminPasswordController } from './controllers/change-admin-password.controller'
 import { AdminGuard } from './guards/admin.guard'
+import { ChangeAdminPasswordService } from './services/change-admin-password.service'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -18,6 +19,7 @@ import { AdminGuard } from './guards/admin.guard'
   providers: [
     AuthenticateDelivererService,
     AuthenticateAdminService,
+    ChangeAdminPasswordService,
     AdminGuard,
   ],
 })

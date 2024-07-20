@@ -23,7 +23,7 @@ describe('Change admin password use case', () => {
     inMemoryAdminsRepository.items.push(admin)
 
     const result = await sut.execute({
-      cpf: admin.cpf,
+      adminId: admin.id.toString(),
       newPassword: 'Changed password',
     })
 
@@ -37,7 +37,7 @@ describe('Change admin password use case', () => {
 
   it("should not be able to change a non existent admin's password", async () => {
     const result = await sut.execute({
-      cpf: '12345678909', // Non-existent CPF
+      adminId: 'non-existing-id',
       newPassword: 'Changed password',
     })
 
