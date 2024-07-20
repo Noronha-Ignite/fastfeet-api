@@ -3,17 +3,15 @@ import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 import { DatabaseModule } from '../../database/database.module'
+import { CryptographyModule } from '../../cryptography/cryptography.module'
 import { AdminFactory } from '@/test/factories/make-admin'
 import { JwtService } from '@nestjs/jwt'
 import { PrismaService } from '@/infra/database/prisma.service'
-import { Hasher } from '@/domain/fastfeet/application/cryptography/hasher'
-import { CryptographyModule } from '@/infra/cryptography/cryptography.module'
 
-describe('Change admin password (E2E)', () => {
+describe('Register Deliverer (E2E)', () => {
   let app: INestApplication
   let jwt: JwtService
   let prisma: PrismaService
-  let hasher: Hasher
 
   let adminFactory: AdminFactory
 
@@ -28,34 +26,37 @@ describe('Change admin password (E2E)', () => {
     adminFactory = moduleRef.get(AdminFactory)
     jwt = moduleRef.get(JwtService)
     prisma = moduleRef.get(PrismaService)
-    hasher = moduleRef.get(Hasher)
 
     await app.init()
   })
 
-  test('[PATCH] /admin/change-password', async () => {
-    const admin = await adminFactory.makePrismaAdmin({
-      password: await hasher.hash('unchanged-password'),
-    })
+  test('[POST] /deliverer', async () => {
+    const admin = await adminFactory.makePrismaAdmin()
     const accessToken = jwt.sign({ sub: admin.id.toString() })
 
     const response = await request(app.getHttpServer())
-      .patch('/admin/change-password')
+      .post('/deliverer')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        password: 'new password',
+        name: 'John Doe',
+        cpf: '12345678909',
+        email: 'example@example.com',
+        password: '123456',
       })
 
-    const adminOnDatabase = await prisma.user.findFirst({
+    const delivererOnDatabase = await prisma.user.findFirst({
       where: {
-        id: admin.id.toString(),
+        cpf: '12345678909',
       },
     })
 
-    expect(response.statusCode).toBe(204)
-    expect(adminOnDatabase).toBeTruthy()
-    expect(
-      await hasher.compare('new password', adminOnDatabase!.password),
-    ).toBe(true)
+    expect(response.statusCode).toBe(201)
+    expect(delivererOnDatabase).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        name: 'John Doe',
+        email: 'example@example.com',
+      }),
+    )
   })
 })

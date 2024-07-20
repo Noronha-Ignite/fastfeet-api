@@ -10,7 +10,7 @@ import { Hasher } from '@/domain/fastfeet/application/cryptography/hasher'
 import { CryptographyModule } from '@/infra/cryptography/cryptography.module'
 import { AdminFactory } from '@/test/factories/make-admin'
 
-describe('Authenticate Deliverer (E2E)', () => {
+describe('Change deliverer password (E2E)', () => {
   let app: INestApplication
   let jwt: JwtService
   let prisma: PrismaService
