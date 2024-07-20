@@ -4,7 +4,7 @@ import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-
 import { Hasher } from '../cryptography/hasher'
 
 type ChangeDelivererPasswordUseCaseRequest = {
-  cpf: string
+  delivererId: string
   newPassword: string
 }
 
@@ -20,10 +20,10 @@ export class ChangeDelivererPasswordUseCase {
   ) {}
 
   async execute({
-    cpf,
+    delivererId,
     newPassword,
   }: ChangeDelivererPasswordUseCaseRequest): Promise<ChangeDelivererPasswordUseCaseResponse> {
-    const deliverer = await this.deliverersRepository.findByCpf(cpf)
+    const deliverer = await this.deliverersRepository.findById(delivererId)
 
     if (!deliverer) {
       return left(new ResourceNotFoundError())

@@ -26,7 +26,7 @@ describe('Change deliverer password use case', () => {
     inMemoryDeliverersRepository.items.push(deliverer)
 
     const result = await sut.execute({
-      cpf: deliverer.cpf,
+      delivererId: deliverer.id.toString(),
       newPassword: 'Changed password',
     })
 
@@ -40,7 +40,7 @@ describe('Change deliverer password use case', () => {
 
   it("should not be able to change a non existent deliverer's password", async () => {
     const result = await sut.execute({
-      cpf: '12345678909', // Non-existent CPF
+      delivererId: 'non-existing-id',
       newPassword: 'Changed password',
     })
 
