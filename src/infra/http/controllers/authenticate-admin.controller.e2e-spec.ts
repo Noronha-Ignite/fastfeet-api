@@ -3,8 +3,8 @@ import { AdminFactory } from '@/test/factories/make-admin'
 import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-import { DatabaseModule } from '../database/database.module'
-import { CryptographyModule } from '../cryptography/cryptography.module'
+import { DatabaseModule } from '../../database/database.module'
+import { CryptographyModule } from '../../cryptography/cryptography.module'
 import { Hasher } from '@/domain/fastfeet/application/cryptography/hasher'
 
 describe('Authenticate Admin (E2E)', () => {

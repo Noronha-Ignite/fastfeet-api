@@ -2,7 +2,7 @@ import { config } from 'dotenv'
 import { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
 import { execSync } from 'child_process'
-import { envSchema } from '@/infra/http/env/env'
+import { envSchema } from '@/infra/env/env'
 
 config({ path: '.env', override: true })
 config({ path: '.env.test', override: true })

@@ -6,8 +6,8 @@ import {
 import { faker } from '@faker-js/faker'
 import { generateRandomCPF } from '../utils/generateRandomCpf'
 import { Injectable } from '@nestjs/common'
-import { PrismaService } from '@/infra/http/database/prisma.service'
-import { PrismaDelivererMapper } from '@/infra/http/database/mappers/prisma-deliverer-mapper'
+import { PrismaService } from '@/infra/database/prisma.service'
+import { PrismaDelivererMapper } from '@/infra/database/mappers/prisma-deliverer-mapper'
 
 export const makeDeliverer = (
   override: Partial<DelivererProps> = {},

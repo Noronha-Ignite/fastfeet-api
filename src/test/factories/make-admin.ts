@@ -2,9 +2,9 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Admin, AdminProps } from '@/domain/fastfeet/enterprise/entities/admin'
 import { faker } from '@faker-js/faker'
 import { generateRandomCPF } from '../utils/generateRandomCpf'
-import { PrismaService } from '@/infra/http/database/prisma.service'
+import { PrismaService } from '@/infra/database/prisma.service'
 import { Injectable } from '@nestjs/common'
-import { PrismaAdminMapper } from '@/infra/http/database/mappers/prisma-admin-mapper'
+import { PrismaAdminMapper } from '@/infra/database/mappers/prisma-admin-mapper'
 
 export const makeAdmin = (
   override: Partial<AdminProps> = {},

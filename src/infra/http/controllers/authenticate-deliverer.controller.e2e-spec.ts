@@ -3,8 +3,8 @@ import { DelivererFactory } from '@/test/factories/make-deliverer'
 import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-import { DatabaseModule } from '../database/database.module'
-import { CryptographyModule } from '../cryptography/cryptography.module'
+import { DatabaseModule } from '../../database/database.module'
+import { CryptographyModule } from '../../cryptography/cryptography.module'
 import { Hasher } from '@/domain/fastfeet/application/cryptography/hasher'
 
 describe('Authenticate Deliverer (E2E)', () => {

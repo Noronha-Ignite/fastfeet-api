@@ -11,7 +11,7 @@ import { z } from 'zod'
 import { validateCPF } from '@/infra/utils/validateCpf'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { InvalidCredentialsError } from '@/domain/fastfeet/application/use-cases/errors/invalid-credentials-error'
-import { Public } from '../auth/public'
+import { Public } from '@/infra/auth/public'
 
 const authenticateAdminBodySchema = z.object({
   cpf: z.string().refine(validateCPF, {
