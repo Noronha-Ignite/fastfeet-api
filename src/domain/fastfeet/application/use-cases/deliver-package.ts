@@ -17,6 +17,8 @@ export type DeliverPackageUseCaseResponse = Either<
   null
 >
 
+// const validFileTypeRegex = /^(image\/(jpeg|png|jpg))$/
+
 export class DeliverPackageUseCase {
   constructor(
     private packagesRepository: PackagesRepository,
