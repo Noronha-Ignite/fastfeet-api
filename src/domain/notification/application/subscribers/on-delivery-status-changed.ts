@@ -2,7 +2,7 @@ import { DomainEvents } from '@/core/events/domain-events'
 import { EventHandler } from '@/core/events/event-handler'
 import { DeliveryStatusChangedEvent } from '@/domain/fastfeet/enterprise/events/delivery-status-changed-event'
 import { SendNotificationUseCase } from '../use-cases/send-notification'
-import { PackagesRepository } from '@/domain/fastfeet/application/repositories/package-repository'
+import { PackagesRepository } from '@/domain/fastfeet/application/repositories/packages-repository'
 
 export class OnDeliveryStatusChanged implements EventHandler {
   setupSubscriptions(): void {

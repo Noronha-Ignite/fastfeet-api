@@ -3,7 +3,10 @@ import {
   Address,
   AddressProps,
 } from '@/domain/fastfeet/enterprise/entities/address'
+import { PrismaAddressMapper } from '@/infra/database/mappers/prisma-address-mapper'
+import { PrismaService } from '@/infra/database/prisma.service'
 import { fakerPT_BR } from '@faker-js/faker'
+import { Injectable } from '@nestjs/common'
 
 export const makeAddress = (
   override: Partial<AddressProps> = {},
@@ -19,9 +22,27 @@ export const makeAddress = (
         .toString()
         .padStart(3, '0'),
       ...override,
+      createdAt: new Date(),
     },
     id,
   )
 
   return address
+}
+
+@Injectable()
+export class AddressFactory {
+  constructor(private prisma: PrismaService) {}
+
+  async makePrismaAddress(
+    override: Partial<AddressProps> = {},
+  ): Promise<Address> {
+    const address = makeAddress(override)
+
+    await this.prisma.address.create({
+      data: PrismaAddressMapper.toPrisma(address),
+    })
+
+    return address
+  }
 }

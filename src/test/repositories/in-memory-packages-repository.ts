@@ -1,5 +1,5 @@
 import { DomainEvents } from '@/core/events/domain-events'
-import { PackagesRepository } from '@/domain/fastfeet/application/repositories/package-repository'
+import { PackagesRepository } from '@/domain/fastfeet/application/repositories/packages-repository'
 import { Package } from '@/domain/fastfeet/enterprise/entities/package'
 
 export class InMemoryPackagesRepository implements PackagesRepository {

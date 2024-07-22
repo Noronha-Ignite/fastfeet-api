@@ -1,6 +1,6 @@
 import { Either, left, right } from '@/core/either'
 import { Delivery } from '../../enterprise/entities/delivery'
-import { PackagesRepository } from '../repositories/package-repository'
+import { PackagesRepository } from '../repositories/packages-repository'
 import { DeliveriesRepository } from '../repositories/deliveries-repository'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
 import { RecipientsRepository } from '../repositories/recipients-repository'

@@ -6,8 +6,9 @@ export type AddressProps = {
   city: string
   street: string
   number: string
-  complement?: string
+  complement?: string | null
   zipCode: string
+  createdAt: Date
 }
 
 export class Address extends Entity<AddressProps> {
@@ -37,5 +38,9 @@ export class Address extends Entity<AddressProps> {
 
   get complement() {
     return this.props.complement
+  }
+
+  get createdAt() {
+    return this.props.createdAt
   }
 }
