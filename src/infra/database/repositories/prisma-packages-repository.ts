@@ -19,6 +19,19 @@ export class PrismaPackagesRepository implements PackagesRepository {
     DomainEvents.dispatchEventsForAggregate(recipientPackage.id)
   }
 
+  async save(recipientPackage: Package): Promise<void> {
+    const data = PrismaPackageMapper.toPrisma(recipientPackage)
+
+    await this.prisma.package.update({
+      data,
+      where: {
+        id: data.id,
+      },
+    })
+
+    DomainEvents.dispatchEventsForAggregate(recipientPackage.id)
+  }
+
   async findById(id: string): Promise<Package | null> {
     const searchedPackage = await this.prisma.package.findUnique({
       where: {

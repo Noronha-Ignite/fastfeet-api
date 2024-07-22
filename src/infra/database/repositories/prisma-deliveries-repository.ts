@@ -4,6 +4,7 @@ import { Delivery } from '@/domain/fastfeet/enterprise/entities/delivery'
 import { PrismaDeliveryMapper } from '../mappers/prisma-delivery-mapper'
 import { DeliveriesRepository } from '@/domain/fastfeet/application/repositories/deliveries-repository'
 import { PaginationParams } from '@/core/repositories/pagination-params'
+import { DomainEvents } from '@/core/events/domain-events'
 
 @Injectable()
 export class PrismaDeliveriesRepository implements DeliveriesRepository {
@@ -15,6 +16,8 @@ export class PrismaDeliveriesRepository implements DeliveriesRepository {
     await this.prisma.delivery.create({
       data,
     })
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
   }
 
   async save(delivery: Delivery): Promise<void> {
@@ -26,6 +29,8 @@ export class PrismaDeliveriesRepository implements DeliveriesRepository {
         id: data.id,
       },
     })
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
   }
 
   async findByPackageId(packageId: string): Promise<Delivery | null> {

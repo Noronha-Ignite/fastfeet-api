@@ -76,6 +76,8 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
   public nextStatus() {
     this.addDomainEvent(new DeliveryStatusChangedEvent(this))
 
+    this.touch()
+
     return this.props.status.next()
   }
 }
