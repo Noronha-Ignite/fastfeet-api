@@ -14,6 +14,8 @@ import { RegisterDelivererController } from './controllers/register-deliverer.co
 import { RegisterDelivererService } from './services/register-deliverer.service'
 import { RegisterPackageController } from './controllers/register-package.controller'
 import { RegisterPackageService } from './services/register-package.service'
+import { RegisterRecipientController } from './controllers/register-recipient.controller'
+import { RegisterRecipientService } from './services/register-recipient.service'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -24,6 +26,7 @@ import { RegisterPackageService } from './services/register-package.service'
     ChangeAdminPasswordController,
     RegisterDelivererController,
     RegisterPackageController,
+    RegisterRecipientController,
   ],
   providers: [
     AuthenticateDelivererService,
@@ -32,6 +35,7 @@ import { RegisterPackageService } from './services/register-package.service'
     ChangeAdminPasswordService,
     RegisterDelivererService,
     RegisterPackageService,
+    RegisterRecipientService,
     AdminGuard,
   ],
 })

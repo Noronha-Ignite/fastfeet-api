@@ -26,3 +26,11 @@ export function validateCPF(cpf: string): boolean {
   // Check if the calculated digits match the input digits
   return digit1 === parseInt(cpf[9]) && digit2 === parseInt(cpf[10])
 }
+
+export function validateZipcode(zipcode: string): boolean {
+  // Brazilian ZIP code pattern
+  const pattern = /^\d{5}-\d{3}$/
+
+  // Check if the ZIP code matches the pattern
+  return pattern.test(zipcode)
+}

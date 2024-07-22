@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common'
 import { RegisterDelivererService } from '../services/register-deliverer.service'
 import { z } from 'zod'
-import { validateCPF } from '@/infra/utils/validateCpf'
+import { validateCPF } from '@/infra/utils/validations'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { AdminGuard } from '../guards/admin.guard'
 import { DelivererAlreadyExistsError } from '@/domain/fastfeet/application/use-cases/errors/deliverer-already-exists-error'

@@ -1,5 +1,6 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Optional } from '@/core/types/optional'
 
 export type AddressProps = {
   uf: string
@@ -11,9 +12,17 @@ export type AddressProps = {
   createdAt: Date
 }
 
+type AddressPayload = Optional<AddressProps, 'createdAt'>
+
 export class Address extends Entity<AddressProps> {
-  static create(props: AddressProps, id?: UniqueEntityID) {
-    return new Address(props, id)
+  static create(props: AddressPayload, id?: UniqueEntityID) {
+    return new Address(
+      {
+        createdAt: new Date(),
+        ...props,
+      },
+      id,
+    )
   }
 
   get uf() {
