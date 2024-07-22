@@ -89,12 +89,12 @@ model Delivery {
   status               DeliveryStatus
   createdAt            DateTime       @default(now()) @map("created_at")
   updatedAt            DateTime?      @updatedAt @map("updated_at")
-  packageId            String         @map("package_id")
-  delivererId          String         @map("deliverer_id")
+  packageId            String         @unique @map("package_id")
+  delivererId          String?        @map("deliverer_id")
   destinationAddressId String         @map("destination_address_id")
 
   package            Package @relation(fields: [packageId], references: [id])
-  deliverer          User    @relation(fields: [delivererId], references: [id])
+  deliverer          User?   @relation(fields: [delivererId], references: [id])
   destinationAddress Address @relation(fields: [destinationAddressId], references: [id])
 
   @@map("deliveries")

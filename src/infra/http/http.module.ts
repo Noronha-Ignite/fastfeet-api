@@ -16,6 +16,8 @@ import { RegisterPackageController } from './controllers/register-package.contro
 import { RegisterPackageService } from './services/register-package.service'
 import { RegisterRecipientController } from './controllers/register-recipient.controller'
 import { RegisterRecipientService } from './services/register-recipient.service'
+import { PickPackageUpController } from './controllers/pick-package-up.controller'
+import { PickPackageUpService } from './services/pick-package-up.service'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -24,6 +26,7 @@ import { RegisterRecipientService } from './services/register-recipient.service'
     AuthenticateAdminController,
     ChangeDelivererPasswordController,
     ChangeAdminPasswordController,
+    PickPackageUpController,
     RegisterDelivererController,
     RegisterPackageController,
     RegisterRecipientController,
@@ -33,6 +36,7 @@ import { RegisterRecipientService } from './services/register-recipient.service'
     AuthenticateAdminService,
     ChangeDelivererPasswordService,
     ChangeAdminPasswordService,
+    PickPackageUpService,
     RegisterDelivererService,
     RegisterPackageService,
     RegisterRecipientService,

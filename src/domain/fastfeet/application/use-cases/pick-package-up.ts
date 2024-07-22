@@ -2,7 +2,6 @@ import { Either, left, right } from '@/core/either'
 import { DeliveriesRepository } from '../repositories/deliveries-repository'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
 import { DeliverersRepository } from '../repositories/deliverers-repository'
-import { DeliveryStatuses } from '../../enterprise/entities/value-objects/delivery-status'
 import { DeliveryAlreadyPickedError } from './errors/delivery-already-picked-error'
 
 export type PickPackageUpUseCaseRequest = {
@@ -33,7 +32,7 @@ export class PickPackageUpUseCase {
 
     if (
       delivery.delivererId !== null &&
-      delivery.status.current !== DeliveryStatuses.WaitingForPickUp
+      delivery.status.current !== 'WAITING_FOR_PICKUP'
     ) {
       return left(new DeliveryAlreadyPickedError())
     }

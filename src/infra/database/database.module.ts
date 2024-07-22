@@ -10,11 +10,14 @@ import { RecipientsRepository } from '@/domain/fastfeet/application/repositories
 import { PrismaRecipientsRepository } from './repositories/prisma-recipients-repository'
 import { AddressesRepository } from '@/domain/fastfeet/application/repositories/address-repository'
 import { PrismaAddressesRepository } from './repositories/prisma-addresses-repository'
+import { DeliveriesRepository } from '@/domain/fastfeet/application/repositories/deliveries-repository'
+import { PrismaDeliveriesRepository } from './repositories/prisma-deliveries-repository'
 
 @Module({
   imports: [],
   providers: [
     PrismaService,
+    { provide: DeliveriesRepository, useClass: PrismaDeliveriesRepository },
     { provide: DeliverersRepository, useClass: PrismaDeliverersRepository },
     { provide: AddressesRepository, useClass: PrismaAddressesRepository },
     { provide: AdminsRepository, useClass: PrismaAdminsRepository },
@@ -23,6 +26,7 @@ import { PrismaAddressesRepository } from './repositories/prisma-addresses-repos
   ],
   exports: [
     PrismaService,
+    DeliveriesRepository,
     DeliverersRepository,
     AddressesRepository,
     AdminsRepository,

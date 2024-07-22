@@ -4,10 +4,7 @@ import { PickPackageUpUseCase } from './pick-package-up'
 import { InMemoryDeliverersRepository } from '@/test/repositories/in-memory-deliverers-repository'
 import { makeDelivery } from '@/test/factories/make-delivery'
 import { makeDeliverer } from '@/test/factories/make-deliverer'
-import {
-  DeliveryStatus,
-  DeliveryStatuses,
-} from '../../enterprise/entities/value-objects/delivery-status'
+import { DeliveryStatus } from '../../enterprise/entities/value-objects/delivery-status'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
 import { DeliveryAlreadyPickedError } from './errors/delivery-already-picked-error'
 import { InMemoryAddressesRepository } from '@/test/repositories/in-memory-addresses-repository'
@@ -57,7 +54,7 @@ describe('Pick package up use case', () => {
     expect(inMemoryDeliveriesRepository.items[0]).toEqual(
       expect.objectContaining({
         id: expect.any(UniqueEntityID),
-        status: DeliveryStatus.create(DeliveryStatuses.InTransit),
+        status: DeliveryStatus.create('IN_TRANSIT'),
         delivererId: deliverer.id,
       }),
     )
@@ -82,7 +79,7 @@ describe('Pick package up use case', () => {
     const delivery = makeDelivery({
       packageId: new UniqueEntityID('package-id'),
       delivererId: deliverer.id,
-      status: DeliveryStatus.create(DeliveryStatuses.InTransit),
+      status: DeliveryStatus.create('IN_TRANSIT'),
     })
 
     inMemoryDeliveriesRepository.items.push(delivery)

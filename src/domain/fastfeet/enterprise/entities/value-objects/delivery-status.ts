@@ -1,23 +1,22 @@
-export enum DeliveryStatuses {
-  WaitingForPickUp = 'WaitingForPickUp',
-  InTransit = 'InTransit',
-  Delivered = 'Delivered',
-  Returned = 'Returned',
-}
+type DeliveryStatuses =
+  | 'WAITING_FOR_PICKUP'
+  | 'IN_TRANSIT'
+  | 'DELIVERED'
+  | 'RETURNED'
 
 const DeliveryStatusLabel: Record<DeliveryStatuses, string> = {
-  [DeliveryStatuses.WaitingForPickUp]: 'Waiting for pick up',
-  [DeliveryStatuses.InTransit]: 'In transit',
-  [DeliveryStatuses.Delivered]: 'Delivered',
-  [DeliveryStatuses.Returned]: 'Returned',
+  WAITING_FOR_PICKUP: 'Waiting for pick up',
+  IN_TRANSIT: 'In transit',
+  DELIVERED: 'Delivered',
+  RETURNED: 'Returned',
 }
 
 export class DeliveryStatus {
-  private statuses = [
-    DeliveryStatuses.WaitingForPickUp,
-    DeliveryStatuses.InTransit,
-    DeliveryStatuses.Delivered,
-    DeliveryStatuses.Returned,
+  private statuses: DeliveryStatuses[] = [
+    'WAITING_FOR_PICKUP',
+    'IN_TRANSIT',
+    'DELIVERED',
+    'RETURNED',
   ]
 
   private currentIndex: number = 0
@@ -30,9 +29,7 @@ export class DeliveryStatus {
     }
   }
 
-  static create(
-    initialStatus: DeliveryStatuses = DeliveryStatuses.WaitingForPickUp,
-  ) {
+  static create(initialStatus: DeliveryStatuses = 'WAITING_FOR_PICKUP') {
     return new DeliveryStatus(initialStatus)
   }
 
