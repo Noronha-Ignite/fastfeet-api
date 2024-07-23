@@ -23,6 +23,8 @@ import { DeliverPackageService } from './services/deliver-package.service'
 import { UploadImageService } from './services/upload-image.service'
 import { EventsModule } from '../events/events.module'
 import { StorageModule } from '../storage/storage.module'
+import { ReturnPackageController } from './controllers/return-package.controller'
+import { ReturnPackageService } from './services/return-package.service'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, EventsModule, StorageModule],
@@ -36,6 +38,7 @@ import { StorageModule } from '../storage/storage.module'
     RegisterDelivererController,
     RegisterPackageController,
     RegisterRecipientController,
+    ReturnPackageController,
   ],
   providers: [
     AuthenticateDelivererService,
@@ -47,6 +50,7 @@ import { StorageModule } from '../storage/storage.module'
     RegisterDelivererService,
     RegisterPackageService,
     RegisterRecipientService,
+    ReturnPackageService,
     UploadImageService,
     AdminGuard,
   ],

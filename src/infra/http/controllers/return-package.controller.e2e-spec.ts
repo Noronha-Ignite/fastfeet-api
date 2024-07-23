@@ -12,6 +12,7 @@ import { PackageFactory } from '@/test/factories/make-package'
 import { DeliveryStatus } from '@/domain/fastfeet/enterprise/entities/value-objects/delivery-status'
 import { AddressFactory } from '@/test/factories/make-address'
 import { RecipientFactory } from '@/test/factories/make-recipient'
+import { AdminFactory } from '@/test/factories/make-admin'
 
 describe('Deliver package (E2E)', () => {
   let app: INestApplication
@@ -19,6 +20,7 @@ describe('Deliver package (E2E)', () => {
   let prisma: PrismaService
 
   let addressFactory: AddressFactory
+  let adminFactory: AdminFactory
   let recipientFactory: RecipientFactory
   let packageFactory: PackageFactory
   let deliveryFactory: DeliveryFactory
@@ -33,12 +35,14 @@ describe('Deliver package (E2E)', () => {
         DeliveryFactory,
         RecipientFactory,
         AddressFactory,
+        AdminFactory,
       ],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
     addressFactory = moduleRef.get(AddressFactory)
+    adminFactory = moduleRef.get(AdminFactory)
     recipientFactory = moduleRef.get(RecipientFactory)
     packageFactory = moduleRef.get(PackageFactory)
     deliveryFactory = moduleRef.get(DeliveryFactory)
@@ -49,9 +53,10 @@ describe('Deliver package (E2E)', () => {
     await app.init()
   })
 
-  test('[PATCH] /package/:packageId/deliver', async () => {
+  test('[PATCH] /package/:packageId/return', async () => {
+    const admin = await adminFactory.makePrismaAdmin()
+    const accessToken = jwt.sign({ sub: admin.id.toString() })
     const deliverer = await delivererFactory.makePrismaDeliverer()
-    const accessToken = jwt.sign({ sub: deliverer.id.toString() })
     const address = await addressFactory.makePrismaAddress()
     const recipient = await recipientFactory.makePrismaRecipient({
       addressId: address.id,
@@ -62,18 +67,21 @@ describe('Deliver package (E2E)', () => {
     await deliveryFactory.makePrismaDelivery({
       packageId: packageDelivered.id,
       delivererId: deliverer.id,
-      status: DeliveryStatus.create('IN_TRANSIT'),
+      status: DeliveryStatus.create('DELIVERED'),
       destinationAddressId: address.id,
     })
 
     const response = await request(app.getHttpServer())
-      .patch(`/packages/${packageDelivered.id.toString()}/deliver`)
+      .patch(`/packages/${packageDelivered.id.toString()}/return`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .attach('file', './src/test/e2e/sample-upload.jpeg')
+      .send()
 
     const packageOnDatabase = await prisma.package.findUnique({
       where: {
         id: packageDelivered.id.toString(),
+      },
+      include: {
+        delivery: true,
       },
     })
 
@@ -81,7 +89,9 @@ describe('Deliver package (E2E)', () => {
     expect(packageOnDatabase).toEqual(
       expect.objectContaining({
         id: packageDelivered.id.toString(),
-        deliveredImageUrl: expect.any(String),
+        delivery: expect.objectContaining({
+          status: 'RETURNED',
+        }),
       }),
     )
   })

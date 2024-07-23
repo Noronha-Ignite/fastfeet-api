@@ -43,7 +43,7 @@ model Address {
   createdAt  DateTime @default(now()) @map("created_at")
 
   recipients Recipient[]
-  Delivery   Delivery[]
+  deliveries Delivery[]
 
   @@map("addresses")
 }
@@ -55,9 +55,9 @@ model Recipient {
   createdAt DateTime @default(now()) @map("created_at")
   addressId String   @map("address_id")
 
-  address      Address        @relation(fields: [addressId], references: [id])
-  packages     Package[]
-  Notification Notification[]
+  address       Address        @relation(fields: [addressId], references: [id])
+  packages      Package[]
+  notifications Notification[]
 
   @@map("recipients")
 }
@@ -71,8 +71,8 @@ model Package {
   updatedAt         DateTime? @updatedAt @map("updated_at")
   recipientId       String    @map("recipient_id")
 
-  recipient Recipient  @relation(fields: [recipientId], references: [id])
-  Delivery  Delivery[]
+  recipient Recipient @relation(fields: [recipientId], references: [id])
+  delivery  Delivery?
 
   @@map("packages")
 }
