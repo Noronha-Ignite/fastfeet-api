@@ -27,6 +27,8 @@ import { ReturnPackageController } from './controllers/return-package.controller
 import { ReturnPackageService } from './services/return-package.service'
 import { FetchDelivererDeliveriesService } from './services/fetch-deliverer-deliveries.service'
 import { FetchDelivererDeliveriesController } from './controllers/fetch-deliverer-deliveries.controller'
+import { FetchAvailablePackagesByCityController } from './controllers/fetch-available-packages-by-city.controller'
+import { FetchAvailablePackagesByCityService } from './services/fetch-available-packages-by-city.service'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, EventsModule, StorageModule],
@@ -36,6 +38,7 @@ import { FetchDelivererDeliveriesController } from './controllers/fetch-delivere
     ChangeDelivererPasswordController,
     ChangeAdminPasswordController,
     DeliverPackageController,
+    FetchAvailablePackagesByCityController,
     FetchDelivererDeliveriesController,
     PickPackageUpController,
     RegisterDelivererController,
@@ -49,6 +52,7 @@ import { FetchDelivererDeliveriesController } from './controllers/fetch-delivere
     ChangeDelivererPasswordService,
     ChangeAdminPasswordService,
     DeliverPackageService,
+    FetchAvailablePackagesByCityService,
     FetchDelivererDeliveriesService,
     PickPackageUpService,
     RegisterDelivererService,

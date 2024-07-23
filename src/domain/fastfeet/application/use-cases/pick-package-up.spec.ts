@@ -8,8 +8,12 @@ import { DeliveryStatus } from '../../enterprise/entities/value-objects/delivery
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
 import { DeliveryAlreadyPickedError } from './errors/delivery-already-picked-error'
 import { InMemoryAddressesRepository } from '@/test/repositories/in-memory-addresses-repository'
+import { InMemoryPackagesRepository } from '@/test/repositories/in-memory-packages-repository'
+import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository'
 
 let inMemoryAddressesRepository: InMemoryAddressesRepository
+let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+let inMemoryPackagesRepository: InMemoryPackagesRepository
 let inMemoryDeliveriesRepository: InMemoryDeliveriesRepository
 let inMemoryDeliverersRepository: InMemoryDeliverersRepository
 let sut: PickPackageUpUseCase
@@ -17,8 +21,12 @@ let sut: PickPackageUpUseCase
 describe('Pick package up use case', () => {
   beforeEach(() => {
     inMemoryAddressesRepository = new InMemoryAddressesRepository()
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
+    inMemoryPackagesRepository = new InMemoryPackagesRepository()
     inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository(
       inMemoryAddressesRepository,
+      inMemoryPackagesRepository,
+      inMemoryRecipientsRepository,
     )
     inMemoryDeliverersRepository = new InMemoryDeliverersRepository()
     sut = new PickPackageUpUseCase(

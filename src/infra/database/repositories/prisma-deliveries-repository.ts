@@ -74,15 +74,25 @@ export class PrismaDeliveriesRepository implements DeliveriesRepository {
     return deliveries.map(PrismaDeliveryDetailsMapper.toDomain)
   }
 
-  async findAllWaitingForPickupByCity(city: string): Promise<Delivery[]> {
+  async findAllWaitingForPickupByCity(
+    city: string,
+  ): Promise<DeliveryDetails[]> {
     const deliveries = await this.prisma.delivery.findMany({
       where: {
         destinationAddress: {
           city,
         },
       },
+      include: {
+        destinationAddress: true,
+        package: {
+          include: {
+            recipient: true,
+          },
+        },
+      },
     })
 
-    return deliveries.map(PrismaDeliveryMapper.toDomain)
+    return deliveries.map(PrismaDeliveryDetailsMapper.toDomain)
   }
 }

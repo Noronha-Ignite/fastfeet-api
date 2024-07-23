@@ -50,47 +50,12 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
       .filter((item) => item.delivererId?.toString() === delivererId)
       .slice((page - 1) * TAKE_PER_PAGE, page * TAKE_PER_PAGE)
 
-    return items.map<DeliveryDetails>((item) => {
-      const itemAddress = this.addressesRepository.items.find((address) =>
-        address.id.isEqualTo(item.destinationAddressId),
-      )
-
-      const itemPackage = this.packagesRepository.items.find(
-        (packageSearched) => item.packageId.isEqualTo(packageSearched.id),
-      )
-
-      const itemRecipient = this.recipientsRepository.items.find((recipient) =>
-        recipient.id.isEqualTo(itemPackage?.recipientId),
-      )
-
-      if (!itemAddress || !itemPackage || !itemRecipient) {
-        throw new Error()
-      }
-
-      return DeliveryDetails.create({
-        status: item.status,
-        deliveryId: item.id,
-        destination: {
-          city: itemAddress.city,
-          number: itemAddress.number,
-          street: itemAddress.street,
-          uf: itemAddress.uf,
-          zipCode: itemAddress.zipCode,
-          complement: itemAddress.complement,
-        },
-        package: {
-          title: itemPackage.title,
-          slug: itemPackage.slug,
-          recipient: {
-            name: itemRecipient.name,
-            email: itemRecipient.email,
-          },
-        },
-      })
-    })
+    return items.map<DeliveryDetails>(this.getDetailsFromDelivery.bind(this))
   }
 
-  async findAllWaitingForPickupByCity(city: string): Promise<Delivery[]> {
+  async findAllWaitingForPickupByCity(
+    city: string,
+  ): Promise<DeliveryDetails[]> {
     const itemsWithAddresses = await Promise.all(
       this.items.map(async (item) => ({
         delivery: item,
@@ -104,6 +69,45 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
       .filter((item) => item.address?.city === city)
       .map((item) => item.delivery)
 
-    return data
+    return data.map(this.getDetailsFromDelivery.bind(this))
+  }
+
+  private getDetailsFromDelivery(delivery: Delivery): DeliveryDetails {
+    const itemAddress = this.addressesRepository.items.find((address) =>
+      address.id.isEqualTo(delivery.destinationAddressId),
+    )
+
+    const itemPackage = this.packagesRepository.items.find((packageSearched) =>
+      delivery.packageId.isEqualTo(packageSearched.id),
+    )
+
+    const itemRecipient = this.recipientsRepository.items.find((recipient) =>
+      recipient.id.isEqualTo(itemPackage?.recipientId),
+    )
+
+    if (!itemAddress || !itemPackage || !itemRecipient) {
+      throw new Error()
+    }
+
+    return DeliveryDetails.create({
+      status: delivery.status,
+      deliveryId: delivery.id,
+      destination: {
+        city: itemAddress.city,
+        number: itemAddress.number,
+        street: itemAddress.street,
+        uf: itemAddress.uf,
+        zipCode: itemAddress.zipCode,
+        complement: itemAddress.complement,
+      },
+      package: {
+        title: itemPackage.title,
+        slug: itemPackage.slug,
+        recipient: {
+          name: itemRecipient.name,
+          email: itemRecipient.email,
+        },
+      },
+    })
   }
 }

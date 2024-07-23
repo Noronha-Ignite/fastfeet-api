@@ -1,5 +1,5 @@
 import { ValueObject } from '@/core/entities/value-object'
-import { DeliveryStatus, DeliveryStatus } from './delivery-status'
+import { DeliveryStatus } from './delivery-status'
 import { Slug } from './slug'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 

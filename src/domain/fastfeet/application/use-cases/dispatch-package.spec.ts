@@ -22,6 +22,8 @@ describe('Dispatch package use case', () => {
     inMemoryAddressesRepository = new InMemoryAddressesRepository()
     inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository(
       inMemoryAddressesRepository,
+      inMemoryPackagesRepository,
+      inMemoryRecipientsRepository,
     )
     sut = new DispatchPackageUseCase(
       inMemoryPackagesRepository,

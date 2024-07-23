@@ -1,24 +1,24 @@
 import { Either, right } from '@/core/either'
-import { Delivery } from '../../enterprise/entities/delivery'
 import { DeliveriesRepository } from '../repositories/deliveries-repository'
+import { DeliveryDetails } from '../../enterprise/entities/value-objects/delivery-details'
 
-export type FetchPackagesByCityUseCaseRequest = {
+export type FetchAvailablePackagesByCityUseCaseRequest = {
   city: string
 }
 
-export type FetchPackagesByCityUseCaseResponse = Either<
+export type FetchAvailablePackagesByCityUseCaseResponse = Either<
   never,
   {
-    deliveries: Delivery[]
+    deliveries: DeliveryDetails[]
   }
 >
 
-export class FetchPackagesByCityUseCase {
+export class FetchAvailablePackagesByCityUseCase {
   constructor(private deliveriesRepository: DeliveriesRepository) {}
 
   async execute({
     city,
-  }: FetchPackagesByCityUseCaseRequest): Promise<FetchPackagesByCityUseCaseResponse> {
+  }: FetchAvailablePackagesByCityUseCaseRequest): Promise<FetchAvailablePackagesByCityUseCaseResponse> {
     const deliveries =
       await this.deliveriesRepository.findAllWaitingForPickupByCity(city)
 

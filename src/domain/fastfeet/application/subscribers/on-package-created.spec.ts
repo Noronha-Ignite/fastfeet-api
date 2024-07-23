@@ -33,6 +33,8 @@ describe('on package created', () => {
     inMemoryAddressesRepository = new InMemoryAddressesRepository()
     inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository(
       inMemoryAddressesRepository,
+      inMemoryPackagesRepository,
+      inMemoryRecipientsRepository,
     )
     dispatchPackageUseCase = new DispatchPackageUseCase(
       inMemoryPackagesRepository,

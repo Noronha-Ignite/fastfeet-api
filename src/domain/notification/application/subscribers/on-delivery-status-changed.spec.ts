@@ -15,9 +15,11 @@ import { makeDelivery } from '@/test/factories/make-delivery'
 import { InMemoryDeliveriesRepository } from '@/test/repositories/in-memory-deliveries-repository'
 import { InMemoryAddressesRepository } from '@/test/repositories/in-memory-addresses-repository'
 import { makePackage } from '@/test/factories/make-package'
+import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository'
 
 let inMemoryAddressesRepository: InMemoryAddressesRepository
 let inMemoryPackagesRepository: InMemoryPackagesRepository
+let inMemoryRecipientsRepository: InMemoryRecipientsRepository
 let inMemoryDeliveriesRepository: InMemoryDeliveriesRepository
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository
 let sendNotificationUseCase: SendNotificationUseCase
@@ -30,11 +32,14 @@ let sendNotificationExecuteSpy: SpyInstance<
 describe('on delivery status changed', () => {
   beforeEach(() => {
     inMemoryAddressesRepository = new InMemoryAddressesRepository()
+    inMemoryPackagesRepository = new InMemoryPackagesRepository()
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
+    inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
     inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository(
       inMemoryAddressesRepository,
+      inMemoryPackagesRepository,
+      inMemoryRecipientsRepository,
     )
-    inMemoryPackagesRepository = new InMemoryPackagesRepository()
-    inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
     sendNotificationUseCase = new SendNotificationUseCase(
       inMemoryNotificationsRepository,
     )

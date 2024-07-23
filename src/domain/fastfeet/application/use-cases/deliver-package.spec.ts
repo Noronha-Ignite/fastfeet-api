@@ -11,8 +11,10 @@ import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-
 import { makeDeliverer } from '@/test/factories/make-deliverer'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAuthorizedError } from './errors/not-authorized-error'
+import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository'
 
 let inMemoryDeliveriesRepository: InMemoryDeliveriesRepository
+let inMemoryRecipientsRepository: InMemoryRecipientsRepository
 let inMemoryAddressesRepository: InMemoryAddressesRepository
 let inMemoryPackagesRepository: InMemoryPackagesRepository
 let sut: DeliverPackageUseCase
@@ -20,9 +22,12 @@ let sut: DeliverPackageUseCase
 describe('Deliver package use case', () => {
   beforeEach(() => {
     inMemoryPackagesRepository = new InMemoryPackagesRepository()
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
     inMemoryAddressesRepository = new InMemoryAddressesRepository()
     inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository(
       inMemoryAddressesRepository,
+      inMemoryPackagesRepository,
+      inMemoryRecipientsRepository,
     )
     sut = new DeliverPackageUseCase(
       inMemoryPackagesRepository,

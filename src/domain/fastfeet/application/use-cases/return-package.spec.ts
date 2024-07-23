@@ -6,16 +6,24 @@ import { makeDelivery } from '@/test/factories/make-delivery'
 import { ReturnPackageUseCase } from './return-package'
 import { NotAllowedDeliveryStatusError } from './errors/not-allowed-delivery-status-error'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
+import { InMemoryPackagesRepository } from '@/test/repositories/in-memory-packages-repository'
+import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository'
 
 let inMemoryDeliveriesRepository: InMemoryDeliveriesRepository
+let inMemoryRecipientsRepository: InMemoryRecipientsRepository
+let inMemoryPackagesRepository: InMemoryPackagesRepository
 let inMemoryAddressesRepository: InMemoryAddressesRepository
 let sut: ReturnPackageUseCase
 
 describe('Return package use case', () => {
   beforeEach(() => {
     inMemoryAddressesRepository = new InMemoryAddressesRepository()
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
+    inMemoryPackagesRepository = new InMemoryPackagesRepository()
     inMemoryDeliveriesRepository = new InMemoryDeliveriesRepository(
       inMemoryAddressesRepository,
+      inMemoryPackagesRepository,
+      inMemoryRecipientsRepository,
     )
     sut = new ReturnPackageUseCase(inMemoryDeliveriesRepository)
   })
