@@ -54,7 +54,7 @@ describe('On package created (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         recipientId: recipient.id.toString(),
-        title: 'Package title', // Consequently slug will be "package-title"
+        title: 'Package title', // Consequently slug will be "package-title-${randomString}"
       })
 
     await waitFor(async () => {
