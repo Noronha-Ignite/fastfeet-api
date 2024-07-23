@@ -4,9 +4,11 @@ import { DeliveriesRepository } from '../repositories/deliveries-repository'
 import { PackageDeliveryDoesNotExistError } from './errors/package-delivery-does-not-exist-error'
 import { ResourceNotFoundError } from '@/core/errors/general/resource-not-found-error'
 import { NotAllowedDeliveryStatusError } from './errors/not-allowed-delivery-status-error'
+import { NotAuthorizedError } from './errors/not-authorized-error'
 
 export type DeliverPackageUseCaseRequest = {
   packageId: string
+  delivererId: string
   deliveredImageUrl: string
 }
 
@@ -17,8 +19,6 @@ export type DeliverPackageUseCaseResponse = Either<
   null
 >
 
-// const validFileTypeRegex = /^(image\/(jpeg|png|jpg))$/
-
 export class DeliverPackageUseCase {
   constructor(
     private packagesRepository: PackagesRepository,
@@ -27,6 +27,7 @@ export class DeliverPackageUseCase {
 
   async execute({
     packageId,
+    delivererId,
     deliveredImageUrl,
   }: DeliverPackageUseCaseRequest): Promise<DeliverPackageUseCaseResponse> {
     const packageToBeDelivered =
@@ -40,6 +41,10 @@ export class DeliverPackageUseCase {
 
     if (!delivery) {
       return left(new PackageDeliveryDoesNotExistError())
+    }
+
+    if (delivery.delivererId?.toString() !== delivererId) {
+      return left(new NotAuthorizedError())
     }
 
     if (delivery.status.current !== 'IN_TRANSIT') {

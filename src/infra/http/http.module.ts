@@ -18,14 +18,20 @@ import { RegisterRecipientController } from './controllers/register-recipient.co
 import { RegisterRecipientService } from './services/register-recipient.service'
 import { PickPackageUpController } from './controllers/pick-package-up.controller'
 import { PickPackageUpService } from './services/pick-package-up.service'
+import { DeliverPackageController } from './controllers/deliver-package.controller'
+import { DeliverPackageService } from './services/deliver-package.service'
+import { UploadImageService } from './services/upload-image.service'
+import { EventsModule } from '../events/events.module'
+import { StorageModule } from '../storage/storage.module'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [DatabaseModule, CryptographyModule, EventsModule, StorageModule],
   controllers: [
     AuthenticateDelivererController,
     AuthenticateAdminController,
     ChangeDelivererPasswordController,
     ChangeAdminPasswordController,
+    DeliverPackageController,
     PickPackageUpController,
     RegisterDelivererController,
     RegisterPackageController,
@@ -36,10 +42,12 @@ import { PickPackageUpService } from './services/pick-package-up.service'
     AuthenticateAdminService,
     ChangeDelivererPasswordService,
     ChangeAdminPasswordService,
+    DeliverPackageService,
     PickPackageUpService,
     RegisterDelivererService,
     RegisterPackageService,
     RegisterRecipientService,
+    UploadImageService,
     AdminGuard,
   ],
 })
