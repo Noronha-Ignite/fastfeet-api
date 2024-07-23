@@ -36,7 +36,7 @@ describe('Register Package (E2E)', () => {
     await app.init()
   })
 
-  test('[POST] /package', async () => {
+  test('[POST] /packages', async () => {
     const admin = await adminFactory.makePrismaAdmin()
     const address = await addressFactory.makePrismaAddress()
     const recipient = await recipientFactory.makePrismaRecipient({
@@ -46,7 +46,7 @@ describe('Register Package (E2E)', () => {
     const accessToken = jwt.sign({ sub: admin.id.toString() })
 
     const response = await request(app.getHttpServer())
-      .post('/package')
+      .post('/packages')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         recipientId: recipient.id.toString(),

@@ -6,7 +6,6 @@ import { DatabaseModule } from '../../database/database.module'
 import { DelivererFactory } from '@/test/factories/make-deliverer'
 import { JwtService } from '@nestjs/jwt'
 import { PrismaService } from '@/infra/database/prisma.service'
-import { Hasher } from '@/domain/fastfeet/application/cryptography/hasher'
 import { CryptographyModule } from '@/infra/cryptography/cryptography.module'
 import { PackageFactory } from '@/test/factories/make-package'
 import { RecipientFactory } from '@/test/factories/make-recipient'
@@ -17,7 +16,6 @@ describe('Pick package up (E2E)', () => {
   let app: INestApplication
   let jwt: JwtService
   let prisma: PrismaService
-  let hasher: Hasher
 
   let addressFactory: AddressFactory
   let recipientFactory: RecipientFactory
@@ -46,7 +44,6 @@ describe('Pick package up (E2E)', () => {
     deliveryFactory = moduleRef.get(DeliveryFactory)
     jwt = moduleRef.get(JwtService)
     prisma = moduleRef.get(PrismaService)
-    hasher = moduleRef.get(Hasher)
 
     await app.init()
   })
@@ -63,9 +60,7 @@ describe('Pick package up (E2E)', () => {
       packageId: packageToBePickedUp.id,
       destinationAddressId: address.id,
     })
-    const deliverer = await delivererFactory.makePrismaDeliverer({
-      password: await hasher.hash('unchanged-password'),
-    })
+    const deliverer = await delivererFactory.makePrismaDeliverer()
     const accessToken = jwt.sign({ sub: deliverer.id.toString() })
 
     const response = await request(app.getHttpServer())

@@ -20,7 +20,7 @@ const registerPackageBodySchema = z.object({
 
 type RegisterPackageBodySchema = z.infer<typeof registerPackageBodySchema>
 
-@Controller('/package')
+@Controller('/packages')
 export class RegisterPackageController {
   constructor(private registerPackageService: RegisterPackageService) {}
 
