@@ -1,6 +1,6 @@
 import { Either, right } from '@/core/either'
-import { Delivery } from '../../enterprise/entities/delivery'
 import { DeliveriesRepository } from '../repositories/deliveries-repository'
+import { DeliveryDetails } from '../../enterprise/entities/value-objects/delivery-details'
 
 export type FetchDelivererDeliveriesUseCaseRequest = {
   delivererId: string
@@ -10,7 +10,7 @@ export type FetchDelivererDeliveriesUseCaseRequest = {
 export type FetchDelivererDeliveriesUseCaseResponse = Either<
   never,
   {
-    deliveries: Delivery[]
+    deliveries: DeliveryDetails[]
   }
 >
 

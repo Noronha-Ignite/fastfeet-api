@@ -25,6 +25,8 @@ import { EventsModule } from '../events/events.module'
 import { StorageModule } from '../storage/storage.module'
 import { ReturnPackageController } from './controllers/return-package.controller'
 import { ReturnPackageService } from './services/return-package.service'
+import { FetchDelivererDeliveriesService } from './services/fetch-deliverer-deliveries.service'
+import { FetchDelivererDeliveriesController } from './controllers/fetch-deliverer-deliveries.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, EventsModule, StorageModule],
@@ -34,6 +36,7 @@ import { ReturnPackageService } from './services/return-package.service'
     ChangeDelivererPasswordController,
     ChangeAdminPasswordController,
     DeliverPackageController,
+    FetchDelivererDeliveriesController,
     PickPackageUpController,
     RegisterDelivererController,
     RegisterPackageController,
@@ -46,6 +49,7 @@ import { ReturnPackageService } from './services/return-package.service'
     ChangeDelivererPasswordService,
     ChangeAdminPasswordService,
     DeliverPackageService,
+    FetchDelivererDeliveriesService,
     PickPackageUpService,
     RegisterDelivererService,
     RegisterPackageService,

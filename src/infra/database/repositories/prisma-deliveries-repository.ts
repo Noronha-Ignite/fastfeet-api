@@ -5,6 +5,8 @@ import { PrismaDeliveryMapper } from '../mappers/prisma-delivery-mapper'
 import { DeliveriesRepository } from '@/domain/fastfeet/application/repositories/deliveries-repository'
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { DomainEvents } from '@/core/events/domain-events'
+import { DeliveryDetails } from '@/domain/fastfeet/enterprise/entities/value-objects/delivery-details'
+import { PrismaDeliveryDetailsMapper } from '../mappers/prisma-delivery-details-mapper'
 
 @Injectable()
 export class PrismaDeliveriesRepository implements DeliveriesRepository {
@@ -50,7 +52,7 @@ export class PrismaDeliveriesRepository implements DeliveriesRepository {
   async findManyByDelivererId(
     delivererId: string,
     { page }: PaginationParams,
-  ): Promise<Delivery[]> {
+  ): Promise<DeliveryDetails[]> {
     const TAKE_BY_PAGE = 20
 
     const deliveries = await this.prisma.delivery.findMany({
@@ -59,9 +61,17 @@ export class PrismaDeliveriesRepository implements DeliveriesRepository {
       },
       skip: (page - 1) * TAKE_BY_PAGE,
       take: TAKE_BY_PAGE,
+      include: {
+        destinationAddress: true,
+        package: {
+          include: {
+            recipient: true,
+          },
+        },
+      },
     })
 
-    return deliveries.map(PrismaDeliveryMapper.toDomain)
+    return deliveries.map(PrismaDeliveryDetailsMapper.toDomain)
   }
 
   async findAllWaitingForPickupByCity(city: string): Promise<Delivery[]> {
